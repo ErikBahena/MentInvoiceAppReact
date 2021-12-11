@@ -8,6 +8,8 @@ import invoiceDetailBtnImg from "../../assets/icon-arrow-right.svg";
 import NoInvoices from "./NoInvoices";
 import InvoiceStatus from "./InvoiceStatus";
 
+import { useNavigate } from "react-router-dom";
+
 const StyledInvoicePanel = styled.div`
   width: 87.5%;
   margin: 0 auto;
@@ -57,7 +59,7 @@ const StyledInvoicePanel = styled.div`
 
   .invoice-due-date,
   .invoice-recipient {
-    color: var(--clr-text-faded);
+    color: var(--clr-terciary-purple);
   }
 
   .invoice-due-date,
@@ -161,6 +163,12 @@ const StyledInvoicePanel = styled.div`
 export default function InvoicesPanel() {
   const [invoices, setInvoices] = useState(getMockData);
 
+  const navigate = useNavigate();
+
+  const handleInvoiceClick = ({ target }) => {
+    navigate(`/invoice/${target.closest(".invoice").dataset.id}`);
+  };
+
   return (
     <StyledInvoicePanel>
       {invoices.length === 0 ? (
@@ -168,13 +176,18 @@ export default function InvoicesPanel() {
       ) : (
         invoices.map((invoice) => {
           return (
-            <div key={invoice.id} className="invoice" data-id={invoice.id}>
+            <div
+              key={invoice.id}
+              className="invoice"
+              data-id={invoice.id}
+              onClick={handleInvoiceClick}
+            >
               <h4 className="invoice-id no-marg-padd">
                 <span>#</span>
                 {invoice.id}
               </h4>
               <div className="invoice-due-date body-1">
-                Due <date>{invoice.paymentDue}</date>
+                Due {invoice.paymentDue}
               </div>
               <div className="invoice-recipient body-1">
                 {invoice.clientName}

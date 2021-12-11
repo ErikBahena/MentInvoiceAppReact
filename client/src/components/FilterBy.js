@@ -3,17 +3,15 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledFilterByComponent = styled.div`
-  flex: 0 0 100%;
   background-color: var(--clr-general-white);
   border-radius: 0.5rem;
-  width: 13.33333%;
-  max-width: 192px;
-  min-height: 128px;
-  justify-content: space-between;
+  width: max-content;
   flex-direction: column;
-  display: none;
   z-index: 3;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 1.5rem 0.8em;
+
+  position: relative;
+  top: 0;
 
   -moz-box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
   box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
@@ -42,15 +40,10 @@ const StyledFilterByComponent = styled.div`
     cursor: pointer;
   }
 
-  /* filter by example */
-
-  /* Hide the default checkbox */
   input[type="checkbox"] {
     visibility: hidden;
   }
 
-  /* Creating a custom checkbox
-  based on demand */
   .checkmark {
     position: absolute;
     top: auto;
@@ -61,9 +54,6 @@ const StyledFilterByComponent = styled.div`
     border-radius: 2px;
   }
 
-  /* Specify the background color to be
-  shown when hovering over checkbox */
-
   .filter-draft-container:hover input ~ .checkmark,
   .filter-pending-container:hover input ~ .checkmark,
   .filter-paid-container:hover input ~ .checkmark {
@@ -71,16 +61,11 @@ const StyledFilterByComponent = styled.div`
     outline: auto var(--clr-primary-purple);
   }
 
-  /* Specify the background color to be
-  shown when checkbox is active */
   .filter-draft-container input:active ~ .checkmark,
   .filter-pending-container input:active ~ .checkmark,
   .filter-paid-container input:active ~ .checkmark {
     background-color: red;
   }
-
-  /* Specify the background color to be
-  shown when checkbox is checked */
 
   .filter-draft-container input:checked ~ .checkmark,
   .filter-pending-container input:checked ~ .checkmark,
@@ -88,25 +73,18 @@ const StyledFilterByComponent = styled.div`
     background-color: var(--clr-primary-purple);
   }
 
-  /* Checkmark to be shown in checkbox */
-  /* It is not be shown when not checked */
   .checkmark:after {
     content: "";
     position: absolute;
     display: none;
   }
 
-  /* Display checkmark when checked */
   .filter-draft-container input:checked ~ .checkmark:after,
   .filter-pending-container input:checked ~ .checkmark:after,
   .filter-paid-container input:checked ~ .checkmark:after {
     display: block;
   }
 
-  /* Styling the checkmark using webkit */
-  /* Rotated the rectangle by 45 degree and 
-  showing only two border to make it look
-  like a tickmark */
   .filter-draft-container .checkmark:after,
   .filter-pending-container .checkmark:after,
   .filter-paid-container .checkmark:after {
@@ -121,16 +99,23 @@ const StyledFilterByComponent = styled.div`
     transform: rotate(45deg);
   }
 
-  /* adding padding to the arrow for filtering */
   .filter-by-status {
     padding: 0.6rem;
   }
+
+  .open {
+    display: flex;
+  }
+
+  .closed {
+    display: none;
+  }
 `;
 
-export default function FilterBy() {
+export default function FilterBy({ open, setOpen }) {
   return (
-    <StyledFilterByComponent>
-      <div className="filter-draft-container checkbox-container">
+    <StyledFilterByComponent className={`${open ? "open" : "closed"}`}>
+      <div className={`filter-draft-container checkbox-container`}>
         <input
           type="checkbox"
           id="filter-draft"

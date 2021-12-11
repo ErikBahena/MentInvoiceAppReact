@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import arrowDown from "../assets/icon-arrow-down.svg";
@@ -33,7 +33,8 @@ const StyledInvoiceControlPanel = styled.div`
 
   .filter-text-and-filter-btn-container {
     margin-right: 1.125rem;
-    /* toggle with js */
+
+    position: relative;
   }
 
   .filter-text {
@@ -113,6 +114,12 @@ const StyledInvoiceControlPanel = styled.div`
 `;
 
 export default function InvoiceControlPanel() {
+  const [filterByOpen, setFilterByOpen] = useState(true);
+
+  const handleFilterByClick = () => {
+    setFilterByOpen(!filterByOpen);
+  };
+
   return (
     <StyledInvoiceControlPanel>
       <div className="invoice-text" id="media-fz-h3">
@@ -123,7 +130,10 @@ export default function InvoiceControlPanel() {
       </div>
 
       <div className="filter-and-new-invoice-btn-container">
-        <div className="filter-text-and-filter-btn-container">
+        <div
+          className="filter-text-and-filter-btn-container"
+          onClick={handleFilterByClick}
+        >
           <h4 className="filter-text">
             Filter<span> by status</span>
           </h4>
@@ -133,7 +143,7 @@ export default function InvoiceControlPanel() {
             className="filter-by-status filter-by-status-btn"
           />
 
-          <FilterBy />
+          <FilterBy open={filterByOpen} setOpen={setFilterByOpen} />
         </div>
 
         <div className="new-invoice-btn-container-bg">
