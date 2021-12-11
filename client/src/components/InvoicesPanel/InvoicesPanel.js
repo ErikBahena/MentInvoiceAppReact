@@ -26,6 +26,11 @@ const StyledInvoicePanel = styled.div`
     align-items: center;
     justify-content: space-evenly;
     border-radius: 0.5rem;
+
+    &:hover {
+      outline: 1px solid var(--clr-primary-purple);
+      outline-style: auto;
+    }
   }
 
   .invoice-status-visual-container {
@@ -64,6 +69,86 @@ const StyledInvoicePanel = styled.div`
   .invoice-total,
   .invoice-id {
     color: var(--font-clr-h4);
+  }
+
+  @media (max-width: 600px) {
+    res-ignore {
+      display: none;
+    }
+
+    .invoice {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: max-content max-content 1fr;
+      gap: 0px 0px;
+      grid-template-areas:
+        "invoice-id . invoice-recipient"
+        "invoice-due-date invoice-due-date ."
+        "invoice-total invoice-total invoice-status-visual-container";
+      height: max-content;
+      margin-bottom: 1rem;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .invoice-due-date {
+      margin-bottom: 0.5rem !important;
+    }
+
+    .invoice-id {
+      grid-area: invoice-id;
+    }
+
+    .invoice-recipient {
+      grid-area: invoice-recipient;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .invoice-total {
+      grid-area: invoice-total;
+      white-space: nowrap;
+    }
+
+    .invoice-due-date {
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      white-space: nowrap;
+      grid-area: invoice-due-date;
+    }
+
+    .view-invoice-btn {
+      display: none;
+    }
+
+    .amount-due-container {
+      margin-bottom: 10rem;
+    }
+
+    .status-text-mobile {
+      margin-bottom: unset !important;
+    }
+  }
+
+  @media (max-width: 300px) {
+    .invoice {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1em;
+
+      grid-template-columns: unset;
+      grid-template-rows: unset;
+
+      grid-template-areas: unset;
+
+      margin-bottom: 1rem;
+      padding: 1.5rem;
+      position: unset;
+    }
+    .invoice-due-date {
+      margin: 0;
+    }
   }
 `;
 

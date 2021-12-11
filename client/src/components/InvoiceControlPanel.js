@@ -50,6 +50,11 @@ const StyledInvoiceControlPanel = styled.div`
     background-color: var(--clr-primary-purple);
     width: 9.375rem;
     border-radius: 1.5rem;
+
+    &:hover {
+      background-color: var(--clr-secondary-purple);
+      transition: 0.4s ease-in-out;
+    }
   }
 
   .new-invoice-cirle {
