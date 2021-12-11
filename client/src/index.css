@@ -1,1 +1,95 @@
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+html {
+  box-sizing: border-box;
+}
 
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Spartan", sans-serif;
+  background-color: var(--clr-background-light);
+  position: relative;
+}
+
+:root {
+  --clr-primary-purple: #7c5dfa;
+  --clr-secondary-purple: #9277ff;
+  --clr-nav-purple-gray: #373b53;
+  --clr-nav-purple-gray-faded: #c4c4c791;
+  --clr-terciary-purple: #7e88c3;
+  --clr-input-border: #dfe3fa;
+  --nav-height-mobile: 4.5rem;
+  --one-pixel-in-rem: 0.063rem;
+  --clr-background-light: #f8f8f8;
+  --clr-item-totals-background: #f9fafe;
+  --clr-text-faded: #888eb0;
+  --clr-general-white: #ffffff;
+  --clr-pending-orage: rgba(255, 143, 0, 1);
+  --clr-pending-opac-orange: rgba(255, 143, 0, 0.06);
+  --clr-danger: #ec5757;
+  --clr-danger-focus: #ee7676;
+  --font-clr-h4: #0c0e16;
+  --clr-amount-due-banner: #373b53;
+  --clr-modal-background: rgba(0, 0, 0, 0.452);
+  /* edit invoice form */
+  --clr-input-border: #dfe3fa;
+  --clr-opacity-mask-black: rgba(0, 0, 0, 0.5);
+  --clr-item-list-text: #777f98;
+  --new-invoice-clr: #f2f2f2;
+  --edit-invoice-clr: #f2f2f2;
+  /* conditional invoice status colors */
+  --clr-success: #33d69f;
+  --clr-success-faded: #a8f8dd55;
+}
+/* Utility Classes for fonts */
+h1 {
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 2.25rem;
+  letter-spacing: -0.063rem;
+}
+h2 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.375rem;
+  letter-spacing: -0.039rem;
+}
+h3 {
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.05rem;
+}
+h4 {
+  font-weight: 700;
+  font-size: 0.75rem;
+  line-height: 0.938rem;
+  letter-spacing: -0.016rem;
+}
+
+.go-back-text {
+  text-decoration: none;
+  color: var(--font-clr-h4);
+}
+
+.body-1 {
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 0.938rem;
+  letter-spacing: -0.016rem;
+}
+.body-2 {
+  font-weight: 500;
+  font-size: 0.688rem;
+  line-height: 1.125rem;
+  letter-spacing: -0.014rem;
+}
+/* no margin or padding utility class */
+.no-marg-padd {
+  margin: 0;
+  padding: 0;
+}
