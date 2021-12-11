@@ -136,18 +136,24 @@ const StyledInvoicePanel = styled.div`
       align-items: center;
       justify-content: center;
       gap: 1em;
-
       grid-template-columns: unset;
       grid-template-rows: unset;
-
       grid-template-areas: unset;
-
       margin-bottom: 1rem;
-      padding: 1.5rem;
+      padding: 1.5em;
       position: unset;
     }
+
     .invoice-due-date {
       margin: 0;
+      grid-area: unset;
+    }
+    h4.invoice-id {
+      grid-area: unset;
+    }
+    .invoice-recipient {
+      grid-area: unset;
+      text-align: unset;
     }
   }
 `;

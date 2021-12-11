@@ -4,6 +4,7 @@ import styled from "styled-components";
 const StyledStatusContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   border-radius: 0.375rem;
 

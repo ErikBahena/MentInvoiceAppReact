@@ -10,15 +10,17 @@ const StyledInvoiceControlPanel = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+
   width: 87.5%;
-  height: 2.75rem;
-  margin: auto auto 6.375rem auto;
-  position: relative;
-  padding-top: 9rem;
+  margin: 0 auto;
+
+  margin-bottom: 5em;
+  padding-top: 9em;
 
   .amount-of-invoices {
     color: var(--clr-text-faded);
-    margin-top: 0.25rem;
+    margin-top: 0.25em;
   }
 
   .filter-and-new-invoice-btn-container,
@@ -27,29 +29,24 @@ const StyledInvoiceControlPanel = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: inherit;
-  }
-
-  .filter-and-new-invoice-btn-container {
-    position: absolute;
-    right: 0;
   }
 
   .filter-text-and-filter-btn-container {
     margin-right: 1.125rem;
-    flex-wrap: wrap;
-    justify-content: center;
     /* toggle with js */
   }
 
   .filter-text {
-    margin-right: 0.75rem;
+    margin-right: 0.75em;
   }
 
   .new-invoice-btn-container-bg {
     background-color: var(--clr-primary-purple);
-    width: 9.375rem;
-    border-radius: 1.5rem;
+    width: max-content;
+    border-radius: 1.5em;
+
+    padding-right: 1.5em;
+    padding-left: 0.5em;
 
     &:hover {
       background-color: var(--clr-secondary-purple);
@@ -57,24 +54,61 @@ const StyledInvoiceControlPanel = styled.div`
     }
   }
 
-  .new-invoice-cirle {
+  .new-invoice-circle {
     background-color: var(--clr-general-white);
     border-radius: 50%;
-    height: 2rem;
-    width: 2rem;
+    height: 2em;
+    width: 2em;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0.375rem 0.5rem 0.375rem 0.375rem;
   }
 
   .new-text {
     color: var(--clr-general-white);
     white-space: nowrap;
+    margin-left: 0.5em;
   }
 
   @media (min-width: 1440px) {
     padding-top: 4.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .new-text span,
+    .filter-text span {
+      display: none;
+    }
+  }
+  @media (max-width: 315px) {
+    flex-direction: column;
+    gap: 1em;
+
+    .invoice-text {
+      align-self: flex-start;
+    }
+
+    .filter-and-new-invoice-btn-container {
+      align-self: flex-end;
+      justify-content: space-between;
+      width: 100%;
+      .filter-text {
+        padding-left: 0.4em;
+      }
+    }
+  }
+
+  @media (max-width: 200px) {
+    .filter-and-new-invoice-btn-container {
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (max-width: 120px) {
+    .new-invoice-circle {
+      display: none;
+    }
   }
 `;
 
@@ -91,8 +125,7 @@ export default function InvoiceControlPanel() {
       <div className="filter-and-new-invoice-btn-container">
         <div className="filter-text-and-filter-btn-container">
           <h4 className="filter-text">
-            Filter
-            <res-ignore>by status</res-ignore>
+            Filter<span> by status</span>
           </h4>
           <img
             src={arrowDown}
@@ -104,12 +137,11 @@ export default function InvoiceControlPanel() {
         </div>
 
         <div className="new-invoice-btn-container-bg">
-          <div className="new-invoice-cirle">
+          <div className="new-invoice-circle">
             <img src={plusIcon} alt className="plus-icon" />
           </div>
           <h4 className="new-text">
-            New
-            <res-ignore>Invoice</res-ignore>
+            New <span>Invoice</span>
           </h4>
         </div>
       </div>
