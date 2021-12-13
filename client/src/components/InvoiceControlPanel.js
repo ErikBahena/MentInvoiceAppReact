@@ -31,6 +31,16 @@ const StyledInvoiceControlPanel = styled.div`
     align-items: center;
   }
 
+  .filterByContainer {
+    // position: absolute;
+
+    border: 1px solid red;
+    left: 50%;
+    // bottom: 0;
+    // -webkit-transform: translateX(-50%);
+    // transform: translateX(-50%);
+  }
+
   .filter-text-and-filter-btn-container {
     margin-right: 1.125rem;
 
@@ -114,7 +124,7 @@ const StyledInvoiceControlPanel = styled.div`
 `;
 
 export default function InvoiceControlPanel() {
-  const [filterByOpen, setFilterByOpen] = useState(true);
+  const [filterByOpen, setFilterByOpen] = useState(false);
 
   const handleFilterByClick = () => {
     setFilterByOpen(!filterByOpen);
@@ -143,17 +153,17 @@ export default function InvoiceControlPanel() {
             className="filter-by-status filter-by-status-btn"
           />
 
-          <FilterBy open={filterByOpen} setOpen={setFilterByOpen} />
+          <FilterBy className="filterByContainer" open={filterByOpen} />
         </div>
 
-        <div className="new-invoice-btn-container-bg">
+        <button className="new-invoice-btn-container-bg">
           <div className="new-invoice-circle">
-            <img src={plusIcon} alt className="plus-icon" />
+            <img src={plusIcon} alt="addition symbol" className="plus-icon" />
           </div>
           <h4 className="new-text">
             New <span>Invoice</span>
           </h4>
-        </div>
+        </button>
       </div>
     </StyledInvoiceControlPanel>
   );

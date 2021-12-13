@@ -75,8 +75,8 @@ const StyledNavBar = styled.nav`
 
   @media screen and (min-width: 1440px) {
     width: min-content;
-    position: fixed;
-    height: 100vh;
+
+    height: 100%;
     display: flex;
     flex-direction: column;
     border-radius: 0 1.25rem 0 0;

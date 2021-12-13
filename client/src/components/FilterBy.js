@@ -5,13 +5,9 @@ import styled from "styled-components";
 const StyledFilterByComponent = styled.div`
   background-color: var(--clr-general-white);
   border-radius: 0.5rem;
-  width: max-content;
   flex-direction: column;
-  z-index: 3;
-  padding: 1.5rem 1.5rem 1.5rem 0.8em;
 
-  position: relative;
-  top: 0;
+  padding: 1.5rem 1.5rem 1.5rem 0.8em;
 
   -moz-box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
   box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
@@ -23,18 +19,12 @@ const StyledFilterByComponent = styled.div`
     padding: 0;
     height: 20px;
     margin-right: 13px;
-    color: red;
-  }
-
-  #filter-draft:checked {
-    background-color: var(--clr-primary-purple);
   }
 
   .filter-draft-container,
   .filter-pending-container,
   .filter-paid-container {
     display: flex;
-    flex-direction: row;
     align-items: center;
     position: relative;
     cursor: pointer;
@@ -67,9 +57,9 @@ const StyledFilterByComponent = styled.div`
     background-color: red;
   }
 
-  .filter-draft-container input:checked ~ .checkmark,
-  .filter-pending-container input:checked ~ .checkmark,
-  .filter-paid-container input:checked ~ .checkmark {
+  .filter-draft-container input.checked ~ .checkmark,
+  .filter-pending-container input.checked ~ .checkmark,
+  .filter-paid-container input.checked ~ .checkmark {
     background-color: var(--clr-primary-purple);
   }
 
@@ -79,9 +69,9 @@ const StyledFilterByComponent = styled.div`
     display: none;
   }
 
-  .filter-draft-container input:checked ~ .checkmark:after,
-  .filter-pending-container input:checked ~ .checkmark:after,
-  .filter-paid-container input:checked ~ .checkmark:after {
+  .filter-draft-container input.checked ~ .checkmark:after,
+  .filter-pending-container input.checked ~ .checkmark:after,
+  .filter-paid-container input.checked ~ .checkmark:after {
     display: block;
   }
 
@@ -103,43 +93,86 @@ const StyledFilterByComponent = styled.div`
     padding: 0.6rem;
   }
 
-  .open {
+  &.open {
     display: flex;
+
+    position: absolute;
+
+    z-index: 3;
+
+    top: 100%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+
+    @media (max-width: 315px) {
+      left: 100%;
+    }
   }
 
-  .closed {
-    display: none;
+  &.closed {
+    display: none !important;
   }
 `;
 
-export default function FilterBy({ open, setOpen }) {
+export default function FilterBy({ open }) {
+  const handleFilterChange = (e) => {
+    const checkbox = e.target
+      .closest(".checkbox-container")
+      .querySelector("input");
+
+    let newValue = checkbox.value;
+    if (checkbox.classList.contains("checked")) newValue = null;
+
+    const allCheckboxes = checkbox.closest(".open").querySelectorAll("input");
+
+    allCheckboxes.forEach((box) => {
+      if (box !== checkbox) box.classList.remove("checked");
+      else checkbox.classList.toggle("checked");
+    });
+  };
+
   return (
     <StyledFilterByComponent className={`${open ? "open" : "closed"}`}>
-      <div className={`filter-draft-container checkbox-container`}>
+      <div
+        className="filter-draft-container checkbox-container"
+        onClick={handleFilterChange}
+      >
         <input
           type="checkbox"
           id="filter-draft"
           name="filter as draft"
+          readOnly
           defaultValue="draft"
         />
         <span className="checkmark" />
         <h4 className="filter-by-draft-text no-marg-padd">Draft</h4>
       </div>
-      <div className="filter-pending-container checkbox-container">
+
+      <div
+        className="filter-pending-container checkbox-container"
+        onClick={handleFilterChange}
+      >
         <input
           type="checkbox"
           id="filter-pending"
           name="filter-as-pending"
+          readOnly
           defaultValue="pending"
         />
         <span className="checkmark" />
         <h4 className="filter-by-pending-text no-marg-padd">Pending</h4>
       </div>
-      <div className="filter-paid-container checkbox-container">
+
+      <div
+        className="filter-paid-container checkbox-container"
+        onClick={handleFilterChange}
+      >
         <input
           type="checkbox"
           id="filter-paid"
           name="filter-as-paid"
+          readOnly
           defaultValue="paid"
         />
         <h4 className="filter-by-paid-text no-marg-padd">Paid</h4>

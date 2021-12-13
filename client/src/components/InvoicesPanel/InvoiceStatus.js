@@ -42,18 +42,11 @@ const StyledStatusContainer = styled.div`
 
   @media (max-width: 600px) {
     grid-area: invoice-status-visual-container;
-    width: 6.5rem;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    right: 0;
-    margin-right: -0.5rem;
-  }
-
-  @media (max-width: 300px) {
-    position: unset;
-    right: unset;
+    flex-wrap: nowrap;
   }
 `;
 
