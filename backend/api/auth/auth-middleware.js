@@ -1,82 +1,42 @@
-const { JWT_SECRET } = require("../../secrets");
-const jwt = require("jsonwebtoken");
-const Users = require("../users/users-model");
+const db = require("../../data/dbConfig");
 
-const restricted = (req, res, next) => {
-  const token = req.headers.authorization;
+function restricted(req, res, next) {
+  if (req.session.user) next();
+  else next({ status: 401, message: "You shall not pass!" });
+}
 
-  if (!token)
-    next({
-      status: 401,
-      message: "Token required",
-    });
+async function checkUsernameFree(req, res, next) {
+  const foundUser = await db("users")
+    .where("username", req.body.username)
+    .first();
 
-  if (token) {
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-      if (err) {
-        next({
-          status: 401,
-          message: `Token invalid`,
-        });
-      } else {
-        req.decodedJwt = decoded;
-        next();
-      }
-    });
-  }
-};
+  if (foundUser) next({ status: 422, message: "Username taken" });
+  else next();
+}
 
-const validateUserName = (req, res, next) => {
-  const { username, password } = req.body;
-  if (
-    !username ||
-    username.trim() === "" ||
-    !password ||
-    password.trim() === ""
-  ) {
-    next({
-      status: 422,
-      message: "Username and password are required",
-    });
-  } else {
-    req.user = {
-      username: username.trim(),
-      password: password.trim(),
-    };
+async function checkUsernameExists(req, res, next) {
+  const foundUser = await db("users")
+    .where("username", req.body.username)
+    .first();
+
+  if (!foundUser) next({ status: 401, message: "Invalid credentials" });
+  else {
+    req.user = foundUser;
     next();
   }
-};
+}
 
-const checkusernameFree = async (req, res, next) => {
-  const { username } = req.user;
-  const user = await Users.findBy({ username });
-  if (user) {
-    next({
-      status: 401,
-      message: "Username already exists",
-    });
-  } else {
-    next();
-  }
-};
+function checkPasswordLength(req, res, next) {
+  const { password } = req.body;
 
-const validateCredentials = async (req, res, next) => {
-  const { username } = req.user;
-  const user = await Users.findBy({ username });
-  if (user) {
-    req.dbUser = user;
-    next();
-  } else {
-    next({
-      status: 401,
-      message: "Invalid credentials",
-    });
-  }
-};
+  if (!password || password.length <= 3)
+    next({ status: 422, message: "Password must be longer than 3 chars" });
+  else next();
+}
 
 module.exports = {
   restricted,
-  validateUserName,
-  checkusernameFree,
-  validateCredentials,
+  checkPasswordLength,
+  checkUsernameFree,
+  checkUsernameExists,
 };
