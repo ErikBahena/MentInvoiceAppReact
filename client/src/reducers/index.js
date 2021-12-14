@@ -10,14 +10,16 @@ import {
 
 import { getMockData } from "../services";
 
+const initialInvoices = getMockData();
+
 export const initialState = {
   isLoading: false,
   errorMessage: "",
-  invoices: getMockData(),
+  invoices: initialInvoices,
 };
 
 const orderInvoices = (orderBy, invoices) => {
-  if (orderBy === "none") return getMockData();
+  if (orderBy === "none") return initialInvoices;
 
   const desiredInvoices = invoices.filter((inv) => inv.status === orderBy);
 
