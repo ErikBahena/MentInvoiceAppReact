@@ -1,6 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import styled from "styled-components";
+
+import { orderInvoices } from "../actions";
 
 const StyledFilterByComponent = styled.div`
   background-color: var(--clr-general-white);
@@ -115,14 +118,14 @@ const StyledFilterByComponent = styled.div`
   }
 `;
 
-export default function FilterBy({ open }) {
+function FilterBy({ open, dispatch }) {
   const handleFilterChange = (e) => {
     const checkbox = e.target
       .closest(".checkbox-container")
       .querySelector("input");
 
-    let newValue = checkbox.value;
-    if (checkbox.classList.contains("checked")) newValue = null;
+    let orderBy = checkbox.value;
+    if (checkbox.classList.contains("checked")) orderBy = "none";
 
     const allCheckboxes = checkbox.closest(".open").querySelectorAll("input");
 
@@ -130,6 +133,8 @@ export default function FilterBy({ open }) {
       if (box !== checkbox) box.classList.remove("checked");
       else checkbox.classList.toggle("checked");
     });
+
+    dispatch(orderInvoices(orderBy));
   };
 
   return (
@@ -181,3 +186,9 @@ export default function FilterBy({ open }) {
     </StyledFilterByComponent>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {};
+};
+
+export default connect(mapStateToProps)(FilterBy);

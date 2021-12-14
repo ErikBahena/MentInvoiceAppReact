@@ -6,6 +6,7 @@ export const FETCH_ERROR = "FETCH_ERROR";
 export const SET_ERROR = "SET_ERROR";
 export const ADD_INVOICE = "ADD_INVOICE";
 export const EDIT_INVOICE = "EDIT_INVOICE";
+export const ORDER_INVOICES = "ORDER_INVOICES";
 
 export const fetchInvoices = () => {
   return (dispatch) => {
@@ -45,6 +46,13 @@ export const editInvoice = (updatedInvoice) => {
 export const fetchStart = () => {
   return {
     type: FETCH_START,
+  };
+};
+
+export const orderInvoices = (orderBy) => {
+  return {
+    type: ORDER_INVOICES,
+    payload: orderBy,
   };
 };
 

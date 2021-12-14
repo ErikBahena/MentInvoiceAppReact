@@ -5,6 +5,7 @@ import {
   SET_ERROR,
   ADD_INVOICE,
   EDIT_INVOICE,
+  ORDER_INVOICES,
 } from "../actions";
 
 import { getMockData } from "../services";
@@ -13,6 +14,16 @@ export const initialState = {
   isLoading: false,
   errorMessage: "",
   invoices: getMockData(),
+};
+
+const orderInvoices = (orderBy, invoices) => {
+  if (orderBy === "none") return getMockData();
+
+  const desiredInvoices = invoices.filter((inv) => inv.status === orderBy);
+
+  const allOtherInvoices = invoices.filter((inv) => inv.status !== orderBy);
+
+  return desiredInvoices.concat(allOtherInvoices);
 };
 
 const reducer = (state = initialState, action) => {
@@ -55,6 +66,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         invoices: [action.payload, ...state.invoices],
+        isLoading: false,
+        errorMessage: "",
+      };
+    case ORDER_INVOICES:
+      return {
+        ...state,
+        invoices: orderInvoices(action.payload, state.invoices),
         isLoading: false,
         errorMessage: "",
       };

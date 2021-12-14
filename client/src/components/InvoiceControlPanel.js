@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 
 import arrowDown from "../assets/icon-arrow-down.svg";
@@ -123,11 +124,17 @@ const StyledInvoiceControlPanel = styled.div`
   }
 `;
 
-export default function InvoiceControlPanel() {
+function InvoiceControlPanel({ invoicesCount }) {
   const [filterByOpen, setFilterByOpen] = useState(false);
 
-  const handleFilterByClick = () => {
+  const handleFilterByClick = ({ invoicesCount }) => {
     setFilterByOpen(!filterByOpen);
+  };
+
+  const formatInvoiceCount = (count) => {
+    if (count === 1) return "1 Invoice";
+    if (count === 0) return "No Invoices";
+    return `${count} Invoices`;
   };
 
   return (
@@ -135,7 +142,7 @@ export default function InvoiceControlPanel() {
       <div className="invoice-text" id="media-fz-h3">
         <h2 className="no-marg-padd">Invoices</h2>
         <div className="amount-of-invoices body-1 no-marg-padd">
-          No Invoices
+          {formatInvoiceCount(invoicesCount)}
         </div>
       </div>
 
@@ -168,3 +175,10 @@ export default function InvoiceControlPanel() {
     </StyledInvoiceControlPanel>
   );
 }
+const mapStateToProps = (state) => {
+  return {
+    invoicesCount: state.invoices.length,
+  };
+};
+
+export default connect(mapStateToProps)(InvoiceControlPanel);
