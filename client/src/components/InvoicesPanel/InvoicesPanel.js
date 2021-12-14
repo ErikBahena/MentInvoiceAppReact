@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
-import { getMockData } from "../../services";
+import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
 
-import invoiceDetailBtnImg from "../../assets/icon-arrow-right.svg";
+import chevronRight from "../../assets/icon-arrow-right.svg";
 
 import NoInvoices from "./NoInvoices";
 import InvoiceStatus from "./InvoiceStatus";
-
-import { useNavigate } from "react-router-dom";
 
 const StyledInvoicePanel = styled.div`
   width: 87.5%;
@@ -160,9 +159,7 @@ const StyledInvoicePanel = styled.div`
   }
 `;
 
-export default function InvoicesPanel() {
-  const [invoices, setInvoices] = useState(getMockData);
-
+function InvoicesPanel({ invoices, isLoading }) {
   const navigate = useNavigate();
 
   const handleInvoiceClick = ({ target }) => {
@@ -200,7 +197,7 @@ export default function InvoicesPanel() {
 
               <div className="view-invoice-btn">
                 <img
-                  src={invoiceDetailBtnImg}
+                  src={chevronRight}
                   alt="view invoice details button"
                   className="arrow-right"
                 />
@@ -212,3 +209,12 @@ export default function InvoicesPanel() {
     </StyledInvoicePanel>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    invoices: state.invoices,
+    isLoading: state.isLoading,
+  };
+};
+
+export default connect(mapStateToProps)(InvoicesPanel);

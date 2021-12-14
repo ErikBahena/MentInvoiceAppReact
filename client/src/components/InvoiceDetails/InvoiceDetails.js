@@ -15,7 +15,6 @@ const StyledInvoiceDetails = styled.div`
   width: 89.5833333vw;
   margin: 0 auto;
   padding-top: 4rem;
-  border: 1px solid red;
 
   .go-back-container,
   .controls-container,
@@ -29,11 +28,11 @@ const StyledInvoiceDetails = styled.div`
   .control-buttons {
     gap: 1em;
     background-color: var(--clr-general-white);
-    width: 100vw;
   }
 
   .go-back-container {
     margin-top: 48px;
+    padding-left: 0.2em;
 
     img {
       margin-right: 0.5em;
@@ -45,7 +44,7 @@ const StyledInvoiceDetails = styled.div`
     width: inherit;
     height: 5.5rem;
     border-radius: 0.5rem;
-    margin-top: 3%;
+    margin-top: max(3%, 2em);
     padding: 0 2em 0 2em;
 
     justify-content: space-between;
@@ -57,7 +56,7 @@ const StyledInvoiceDetails = styled.div`
 
   div.controls-container > div:nth-child(1) > div:nth-child(2) {
     width: max-content;
-    padding: 0 2.5em 0 2.5em;
+    padding: 0 max(1em, 2%);
     justify-content: center;
     align-items: center;
     display: flex;
@@ -67,13 +66,18 @@ const StyledInvoiceDetails = styled.div`
   @media (max-width: 635px) {
     .control-buttons {
       position: fixed;
-      border: 1px solid red;
       bottom: 0;
       left: 0;
+      width: 100%;
+      padding: 0.8em 2em;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
-    div.controls-container > div:nth-child(1) {
+    .controls-container > div:nth-child(1) {
+      width: 100%;
       justify-content: space-between;
+      flex-wrap: wrap;
     }
   }
 `;
@@ -110,7 +114,7 @@ export default function InvoiceDetails(params) {
             </>
           )}
 
-          {invoice.status === "paid" && <Button type="delete" />}
+          {invoice.status === "paid" && <Button type="delete" text="Delete" />}
         </div>
       </div>
 
