@@ -8,12 +8,12 @@ export const ADD_INVOICE = "ADD_INVOICE";
 export const EDIT_INVOICE = "EDIT_INVOICE";
 export const ORDER_INVOICES = "ORDER_INVOICES";
 
-export const fetchInvoices = () => {
+export const fetchInvoices = (id) => {
   return (dispatch) => {
     dispatch(fetchStart());
 
     axios
-      .get("http://localhost:3333/smurfs")
+      .get(`http://localhost:9000/api/users/${id}/invoices`)
       .then((res) => {
         dispatch(fetchSuccess(res.data));
       })
