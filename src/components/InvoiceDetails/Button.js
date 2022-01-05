@@ -23,6 +23,11 @@ const StyledButton = styled.button`
     background-color: var(--clr-primary-purple);
     color: var(--clr-general-white);
   }
+
+  &.sign-up {
+    background-color: var(--clr-primary-purple);
+    color: var(--clr-general-white);
+  }
 `;
 
 export default function Button({ type, text }) {

@@ -10,7 +10,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   font-family: "Spartan", sans-serif;
   background-color: var(--clr-background-light);
   position: relative;
@@ -103,4 +103,12 @@ h4 {
 .no-marg-padd {
   margin: 0;
   padding: 0;
+}
+
+input {
+  font-family: inherit;
+  font-weight: 700;
+  /* font-size: 0.75rem; */
+  line-height: 0.938rem;
+  letter-spacing: -0.016rem;
 }

@@ -13,7 +13,7 @@ export const fetchInvoices = (id) => {
     dispatch(fetchStart());
 
     axios
-      .get(`http://localhost:9000/api/users/${id}/invoices`)
+      .get(`http://localhost:9000/api/invoices${id}`)
       .then((res) => {
         dispatch(fetchSuccess(res.data));
       })

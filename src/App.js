@@ -4,13 +4,16 @@ import NavBar from "./components/NavBar";
 import InvoiceControlPanel from "./components/InvoiceControlPanel";
 import InvoicesPanel from "./components/InvoicesPanel/InvoicesPanel";
 import InvoiceDetails from "./components/InvoiceDetails/InvoiceDetails";
+import Access from "./components/Access";
 
 function App() {
   return (
     <>
-      <NavBar />
-
       <Routes>
+        <Route path={"/invoices" | "/invoice/:id"} element={<NavBar />} />
+
+        <Route path="/access" element={<Access />} />
+
         <Route
           path="/invoices"
           element={
