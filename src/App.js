@@ -5,6 +5,7 @@ import InvoiceControlPanel from "./components/InvoiceControlPanel";
 import InvoicesPanel from "./components/InvoicesPanel/InvoicesPanel";
 import InvoiceDetails from "./components/InvoiceDetails/InvoiceDetails";
 import Access from "./components/Access";
+import PrivateRoute from "./routes/PrivateRoute.js";
 
 function App() {
   return (
@@ -14,15 +15,18 @@ function App() {
 
         <Route path="/access" element={<Access />} />
 
-        <Route
-          path="/invoices"
-          element={
-            <>
-              <InvoiceControlPanel />
-              <InvoicesPanel />
-            </>
-          }
-        />
+        <Route path="/invoices" element={<PrivateRoute />}>
+          <Route
+            path="/invoices"
+            element={
+              <>
+                <InvoiceControlPanel />
+                <InvoicesPanel />
+              </>
+            }
+          />
+        </Route>
+
         <Route path="/invoice/:id" element={<InvoiceDetails />} />
       </Routes>
     </>

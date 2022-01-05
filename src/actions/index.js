@@ -7,9 +7,21 @@ export const SET_ERROR = "SET_ERROR";
 export const ADD_INVOICE = "ADD_INVOICE";
 export const EDIT_INVOICE = "EDIT_INVOICE";
 export const ORDER_INVOICES = "ORDER_INVOICES";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+
+export const login = (userInfo) => {
+  return async (dispatch) => {
+    dispatch(fetchStart());
+
+    axios
+      .post("https://ment-invoice-app.herokuapp.com/api/auth/login", userInfo)
+      .then((res) => dispatch(loginSuccess(res.data)))
+      .catch((err) => dispatch(fetchError(err.message)));
+  };
+};
 
 export const fetchInvoices = (id) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(fetchStart());
 
     axios
@@ -53,6 +65,13 @@ export const orderInvoices = (orderBy) => {
   return {
     type: ORDER_INVOICES,
     payload: orderBy,
+  };
+};
+
+export const loginSuccess = (userInfo) => {
+  return {
+    type: LOGIN_SUCCESS,
+    payload: userInfo,
   };
 };
 

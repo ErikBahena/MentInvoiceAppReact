@@ -6,6 +6,7 @@ import {
   ADD_INVOICE,
   EDIT_INVOICE,
   ORDER_INVOICES,
+  LOGIN_SUCCESS,
 } from "../actions";
 
 import { getMockData } from "../services";
@@ -30,6 +31,13 @@ const orderInvoices = (orderBy, invoices) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        userInfo: action.payload,
+        isLoading: false,
+        errorMessage: "",
+      };
     case FETCH_START:
       return {
         ...state,

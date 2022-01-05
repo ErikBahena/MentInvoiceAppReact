@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
+import { login } from "../actions";
+import { connect } from "react-redux";
 
 const StyledSignUpSignIn = styled.div`
   border-radius: 10px;
@@ -202,6 +206,15 @@ const StyledSignUpSignIn = styled.div`
 
     form {
       padding: 0 5%;
+
+      input {
+        width: max(90%, 150px);
+      }
+    }
+
+    h1 {
+      margin: 0;
+      padding: 0;
     }
 
     .responsive-container {
@@ -220,11 +233,16 @@ const StyledSignUpSignIn = styled.div`
     .sign-up-container {
       left: unset;
       order: 0;
-
       transform: translateX(-100%);
+
+      button {
+        margin-top: 10%;
+      }
     }
+
     .sign-in-container {
       left: unset;
+      margin-top: 10%;
     }
 
     .overlay-container {
@@ -237,8 +255,6 @@ const StyledSignUpSignIn = styled.div`
       transform: unset;
       webkit-transform: unset;
     }
-    &.right-panel-active .sign-in-container {
-    }
 
     &.right-panel-active .overlay-container {
       transform: translateY(100%);
@@ -246,8 +262,27 @@ const StyledSignUpSignIn = styled.div`
   }
 `;
 
-export default function Access() {
+const initialSignInValues = {
+  email: "",
+  password: "",
+};
+
+function Access({ dispatch, userInfo }) {
   const [rightPanelActive, setRightPanelActive] = useState(false);
+  const [signInValues, setSignInValues] = useState(initialSignInValues);
+  const [signUpValues, setSignUpValues] = useState({});
+
+  const navigate = useNavigate();
+
+  const handleSignInChange = (e) => {
+    setSignInValues({ ...signInValues, [e.target.type]: e.target.value });
+  };
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    dispatch(login(signInValues));
+    navigate("/invoices");
+  };
 
   return (
     <StyledSignUpSignIn className={rightPanelActive && "right-panel-active"}>
@@ -255,21 +290,35 @@ export default function Access() {
         <div className="form-container sign-up-container">
           <form action="#">
             <h1>Create Account</h1>
-
             <input type="email" placeholder="Email" />
+
             <input type="password" placeholder="Password" />
             <button>Sign Up</button>
           </form>
         </div>
 
         <div className="form-container sign-in-container">
-          <form action="#">
+          <form>
             <h1>Sign in</h1>
 
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <a href="#">Forgot your password?</a>
-            <button>Sign In</button>
+            <input
+              onChange={handleSignInChange}
+              value={signInValues.email}
+              type="email"
+              placeholder="Email"
+            />
+            <input
+              onChange={handleSignInChange}
+              value={signInValues.password}
+              type="password"
+              placeholder="Password"
+            />
+            <p>
+              <a href="#">Forgot your password?</a>
+            </p>
+            <button onClick={handleSignIn} type="submit">
+              Sign In
+            </button>
             {/* <button>Guest Account</button> */}
           </form>
         </div>
@@ -308,3 +357,9 @@ export default function Access() {
     </StyledSignUpSignIn>
   );
 }
+
+const mapStateToProps = (state) => {
+  return { userInfo: state.userInfo };
+};
+
+export default connect(mapStateToProps)(Access);
