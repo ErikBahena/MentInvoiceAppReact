@@ -298,7 +298,7 @@ function Access({ dispatch, userInfo }) {
         </div>
 
         <div className="form-container sign-in-container">
-          <form>
+          <form onSubmit={handleSignIn}>
             <h1>Sign in</h1>
 
             <input
@@ -313,12 +313,8 @@ function Access({ dispatch, userInfo }) {
               type="password"
               placeholder="Password"
             />
-            <p>
-              <a href="#">Forgot your password?</a>
-            </p>
-            <button onClick={handleSignIn} type="submit">
-              Sign In
-            </button>
+            <p>{/* <a href="#">Forgot your password?</a> */}</p>
+            <button type="submit">Sign In</button>
             {/* <button>Guest Account</button> */}
           </form>
         </div>

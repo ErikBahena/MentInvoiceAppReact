@@ -11,8 +11,6 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path={"/invoices" | "/invoice/:id"} element={<NavBar />} />
-
         <Route path="/access" element={<Access />} />
 
         <Route path="/invoices" element={<PrivateRoute />}>
@@ -20,6 +18,7 @@ function App() {
             path="/invoices"
             element={
               <>
+                <NavBar />
                 <InvoiceControlPanel />
                 <InvoicesPanel />
               </>
@@ -27,7 +26,15 @@ function App() {
           />
         </Route>
 
-        <Route path="/invoice/:id" element={<InvoiceDetails />} />
+        <Route
+          path="/invoice/:id"
+          element={
+            <>
+              <NavBar />
+              <InvoiceDetails />
+            </>
+          }
+        />
       </Routes>
     </>
   );

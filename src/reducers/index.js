@@ -32,6 +32,9 @@ const orderInvoices = (orderBy, invoices) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("userIcon", action.payload.photo_url);
+
       return {
         ...state,
         userInfo: action.payload,
