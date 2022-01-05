@@ -109,7 +109,8 @@ h4 {
 input {
   font-family: inherit;
   font-weight: 700;
-  /* font-size: 0.75rem; */
+  padding-left: 16px;
+  padding-right: 16px;
   line-height: 0.938rem;
   letter-spacing: -0.016rem;
 }

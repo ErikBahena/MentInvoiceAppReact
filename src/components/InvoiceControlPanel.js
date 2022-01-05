@@ -6,6 +6,7 @@ import arrowDown from "../assets/icon-arrow-down.svg";
 import plusIcon from "../assets/icon-plus.svg";
 
 import FilterBy from "./FilterBy";
+import InvoiceForm from "./invoiceForm/InvoiceForm";
 
 const StyledInvoiceControlPanel = styled.div`
   display: flex;
@@ -126,9 +127,14 @@ const StyledInvoiceControlPanel = styled.div`
 
 function InvoiceControlPanel({ invoicesCount }) {
   const [filterByOpen, setFilterByOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
 
-  const handleFilterByClick = ({ invoicesCount }) => {
+  const handleFilterByClick = () => {
     setFilterByOpen(!filterByOpen);
+  };
+
+  const handleFormOpen = () => {
+    setFormOpen(!formOpen);
   };
 
   const formatInvoiceCount = (count) => {
@@ -138,41 +144,50 @@ function InvoiceControlPanel({ invoicesCount }) {
   };
 
   return (
-    <StyledInvoiceControlPanel>
-      <div className="invoice-text" id="media-fz-h3">
-        <h2 className="no-marg-padd">Invoices</h2>
-        <div className="amount-of-invoices body-1 no-marg-padd">
-          {formatInvoiceCount(invoicesCount)}
-        </div>
-      </div>
+    <>
+      {formOpen && (
+        <InvoiceForm handleFormOpen={handleFormOpen} formOpen={formOpen} />
+      )}
 
-      <div className="filter-and-new-invoice-btn-container">
-        <div
-          className="filter-text-and-filter-btn-container"
-          onClick={handleFilterByClick}
-        >
-          <h4 className="filter-text">
-            Filter<span> by status</span>
-          </h4>
-          <img
-            src={arrowDown}
-            alt="filter invoices button"
-            className="filter-by-status filter-by-status-btn"
-          />
-
-          <FilterBy className="filterByContainer" open={filterByOpen} />
-        </div>
-
-        <button className="new-invoice-btn-container-bg">
-          <div className="new-invoice-circle">
-            <img src={plusIcon} alt="addition symbol" className="plus-icon" />
+      <StyledInvoiceControlPanel>
+        <div className="invoice-text" id="media-fz-h3">
+          <h2 className="no-marg-padd">Invoices</h2>
+          <div className="amount-of-invoices body-1 no-marg-padd">
+            {formatInvoiceCount(invoicesCount)}
           </div>
-          <h4 className="new-text">
-            New <span>Invoice</span>
-          </h4>
-        </button>
-      </div>
-    </StyledInvoiceControlPanel>
+        </div>
+
+        <div className="filter-and-new-invoice-btn-container">
+          <div
+            className="filter-text-and-filter-btn-container"
+            onClick={handleFilterByClick}
+          >
+            <h4 className="filter-text">
+              Filter<span> by status</span>
+            </h4>
+            <img
+              src={arrowDown}
+              alt="filter invoices button"
+              className="filter-by-status filter-by-status-btn"
+            />
+
+            <FilterBy className="filterByContainer" open={filterByOpen} />
+          </div>
+
+          <button
+            className="new-invoice-btn-container-bg"
+            onClick={handleFormOpen}
+          >
+            <div className="new-invoice-circle">
+              <img src={plusIcon} alt="addition symbol" className="plus-icon" />
+            </div>
+            <h4 className="new-text">
+              New <span>Invoice</span>
+            </h4>
+          </button>
+        </div>
+      </StyledInvoiceControlPanel>
+    </>
   );
 }
 const mapStateToProps = (state) => {
