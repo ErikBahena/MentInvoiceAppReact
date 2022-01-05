@@ -57,6 +57,8 @@ const StyledSignUpSignIn = styled.div`
     flex-direction: column;
     padding: 0 50px;
     height: 100%;
+
+    width: 100%;
     text-align: center;
   }
 
@@ -76,9 +78,9 @@ const StyledSignUpSignIn = styled.div`
     }
   }
 
-  // .responsive-container {
-  //   display: flex;
-  // }
+  .responsive-container {
+    display: flex;
+  }
 
   .form-container {
     position: absolute;
@@ -193,19 +195,53 @@ const StyledSignUpSignIn = styled.div`
     transform: translateX(20%);
   }
 
-  .social-container {
-    margin: 20px 0;
-    width: 100%;
-  }
-
   @media (max-width: 820px) {
+    display: flex;
+    flex-direction: column;
+    width: min(530px, 90%);
+
+    form {
+      padding: 0 5%;
+    }
+
     .responsive-container {
       display: flex;
-
-      border: 3px solid red;
       flex-direction: column;
+    }
 
-      flex-wrap: wrap;
+    .form-container {
+      position: unset;
+      top: unset;
+      height: 50%;
+      padding: 1.4em 0;
+      width: 100%;
+    }
+
+    .sign-up-container {
+      left: unset;
+      order: 0;
+
+      transform: translateX(-100%);
+    }
+    .sign-in-container {
+      left: unset;
+    }
+
+    .overlay-container {
+      height: 50%;
+      width: 100%;
+      left: unset;
+    }
+
+    &.right-panel-active .sign-up-container {
+      transform: unset;
+      webkit-transform: unset;
+    }
+    &.right-panel-active .sign-in-container {
+    }
+
+    &.right-panel-active .overlay-container {
+      transform: translateY(100%);
     }
   }
 `;
