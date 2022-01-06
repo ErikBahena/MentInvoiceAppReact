@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import ItemList from "./ItemList";
 
 const StyledInvoiceForm = styled.div`
   .new-invoice-container-background {
@@ -21,7 +22,7 @@ const StyledInvoiceForm = styled.div`
     padding: 3.5em 3.5em 2em 3.5em;
   }
 
-  .new-invoice-form {
+  form {
     margin-top: 48px;
   }
 
@@ -51,11 +52,18 @@ const StyledInvoiceForm = styled.div`
 
   // input container styling
 
+  .city-postal-country-container div,
+  .bill-from-city-postal-country-container div,
+  .bill-to-city-postal-country-container div {
+    width: min-content;
+  }
+
   .city-postal-country-container,
-  .bill-from-city-postal-country-container {
+  .bill-from-city-postal-country-container,
+  .bill-to-city-postal-country-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top: 1.5em;
   }
 
@@ -86,7 +94,7 @@ const StyledInvoiceForm = styled.div`
   .invoice-date-payment-terms-container-to-break {
     display: flex;
     flex-direction: row;
-    margin-bottom: 1.5rem;
+    margin: 1.5em 0;
     justify-content: space-between;
   }
 
@@ -103,273 +111,345 @@ const StyledInvoiceForm = styled.div`
   }
 `;
 
+const initialFormValues = {
+  paymentDue: "",
+  description: "",
+  paymentTerms: "",
+
+  clientName: "",
+  clientEmail: "",
+  status: "draft",
+
+  senderAddress: {
+    city: "",
+    country: "",
+    postCode: "",
+    street: "",
+  },
+
+  clientAddress: {
+    city: "",
+    country: "",
+    postCode: "",
+    street: "",
+  },
+
+  items: [
+    {
+      name: "Brand Guidelines",
+      price: 1800.9,
+      quantity: 1,
+      total: 1800.9,
+    },
+  ],
+
+  total: 1840.9,
+};
+
 export default function InvoiceForm({ handleFormOpen, formOpen }) {
+  const [formValues, setFormValues] = useState(initialFormValues);
+
+  const handleFormChange = (e, type) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (type === "senderAddress")
+      setFormValues({
+        ...formValues,
+        senderAddress: {
+          ...formValues.senderAddress,
+          [name]: value,
+        },
+      });
+    else if (type === "clientAddress")
+      setFormValues({
+        ...formValues,
+        clientAddress: {
+          ...formValues.clientAddress,
+          [name]: value,
+        },
+      });
+    else if (type === "general") {
+      setFormValues({
+        ...formValues,
+        [name]: value,
+      });
+    }
+  };
+
   return (
     <StyledInvoiceForm>
       {formOpen && (
-        <div
-          className="new-invoice-container-background"
-          onClick={handleFormOpen}
-        />
-      )}
-      {formOpen && (
-        <div className="new-invoice-form-container">
-          <h1 className="new-invoice-text no-marg-padd">New Invoice</h1>
-          <form className="new-invoice-form">
-            <h4 className="bill-from-text no-marg-padd">Bill From</h4>
-            <div className="bill-from-street-address-container">
-              <label
-                htmlFor="bill-from-street-address"
-                className="bill-from-street-address-label body-1"
-              >
-                Street Address
-              </label>
-              <input
-                type="text"
-                className="long-input-length"
-                name="bill-from-street-address"
-                id="bill-from-street-address"
-              />
-            </div>
-            <div className="city-postal-country-container">
-              <div className="bill-from-city-container">
+        <>
+          <div
+            className="new-invoice-container-background"
+            onClick={handleFormOpen}
+          />
+
+          <div className="new-invoice-form-container">
+            <h1 className="new-invoice-text no-marg-padd">New Invoice</h1>
+
+            <form>
+              <h4 className="bill-from-text no-marg-padd">Bill From</h4>
+
+              <div className="bill-from-street-address-container">
                 <label
-                  htmlFor="bill-from-city"
-                  className="bill-from-city-text body-1"
+                  htmlFor="bill-from-street-address"
+                  className="bill-from-street-address-label body-1"
                 >
-                  City
+                  Street Address
                 </label>
                 <input
+                  onChange={(e) => handleFormChange(e, "senderAddress")}
+                  value={formValues.senderAddress.street}
                   type="text"
-                  className="small-input-length"
-                  name="bill-from-city"
-                  id="bill-from-city"
+                  className="long-input-length"
+                  name="street"
+                  id="bill-from-street-address"
                 />
               </div>
 
-              <div className="bill-from-postal-code-container">
-                <label
-                  htmlFor="bill-from-postal-code"
-                  className="bill-from-postal-code-text body-1"
-                >
-                  Postal Code
-                </label>
-                <input
-                  type="text"
-                  className="small-input-length"
-                  name="bill-from-postal-code"
-                  id="bill-from-postal-code"
-                />
-              </div>
+              <div className="city-postal-country-container">
+                <div className="bill-from-city-container">
+                  <label
+                    htmlFor="bill-from-city"
+                    className="bill-from-city-text body-1"
+                  >
+                    City
+                  </label>
+                  <input
+                    onChange={(e) => handleFormChange(e, "senderAddress")}
+                    value={formValues.senderAddress.city}
+                    type="text"
+                    className="small-input-length"
+                    name="city"
+                    id="bill-from-city"
+                  />
+                </div>
 
-              <div className="bill-from-country-container">
-                <label
-                  htmlFor="bill-from-country"
-                  className="bill-from-country-text body-1"
-                >
-                  Country
-                </label>
-                <input
-                  type="text"
-                  className="small-input-length"
-                  name="bill-from-country"
-                  id="bill-from-country"
-                />
-              </div>
-            </div>
+                <div className="bill-from-postal-code-container">
+                  <label
+                    htmlFor="bill-from-postal-code"
+                    className="bill-from-postal-code-text body-1"
+                  >
+                    Postal Code
+                  </label>
+                  <input
+                    onChange={(e) => handleFormChange(e, "senderAddress")}
+                    value={formValues.senderAddress.postCode}
+                    type="text"
+                    className="small-input-length"
+                    name="postCode"
+                    id="bill-from-postal-code"
+                  />
+                </div>
 
-            <h4 className="bill-to-text Form no-marg-padd">Bill To</h4>
-            <div className="bill-to-clients-name-container">
-              <label
-                htmlFor="bill-to-clients-name"
-                className="bill-to-clients-name-text body-1"
-              >
-                Client's Name
-              </label>
-              <input
-                type="text"
-                className="long-input-length"
-                name="bill-to-clients-name"
-                id="bill-to-clients-name"
-              />
-            </div>
-            <div className="bill-to-clients-email-container">
-              <label
-                htmlFor="bill-to-clients-email"
-                className="bill-to-clients-email-text body-1"
-              >
-                Client's Email
-              </label>
-              <input
-                type="text"
-                className="long-input-length"
-                name="bill-to-clients-email"
-                id="bill-to-clients-email"
-              />
-            </div>
-            <div className="bill-to-clients-street-address-container">
-              <label
-                htmlFor="bill-to-clients-street-address"
-                className="bill-to-clients-street-address-text body-1"
-              >
-                Street Address
-              </label>
-              <input
-                type="text"
-                className="long-input-length"
-                name="bill-to-clients-street-address"
-                id="bill-to-clients-street-address"
-              />
-            </div>
-            <div className="bill-from-city-postal-country-container">
-              <div className="bill-to-city-container">
-                <label
-                  htmlFor="bill-to-city"
-                  className="bill-to-city-text body-1"
-                >
-                  City
-                </label>
-                <input
-                  type="text"
-                  className="small-input-length"
-                  name="bill-to-city"
-                  id="bill-to-city"
-                />
-              </div>
-              <div className="bill-to-postal-code-container">
-                <label
-                  htmlFor="bill-to-postal-code"
-                  className="bill-to-postal-code-text body-1"
-                >
-                  Postal Code
-                </label>
-                <input
-                  type="text"
-                  className="small-input-length"
-                  name="bill-to-postal-code"
-                  id="bill-to-postal-code"
-                />
-              </div>
-              <div className="bill-to-country-container">
-                <label
-                  htmlFor="bill-to-country"
-                  className="bill-to-country-text body-1"
-                >
-                  Country
-                </label>
-                <input
-                  type="text"
-                  className="small-input-length"
-                  name="bill-to-country"
-                  id="bill-to-country"
-                />
-              </div>
-            </div>
-            <div className="invoice-date-payment-terms-container-to-break">
-              <div className="invoice-date-container">
-                <label
-                  htmlFor="invoice-date"
-                  className="invoice-date-text body-1"
-                >
-                  Due Date
-                </label>
-                <input
-                  type="date"
-                  className="custom-length-small-input"
-                  name="invoice-date"
-                  id="invoice-date"
-                />
-              </div>
-              <div className="payment-terms-container">
-                <label
-                  htmlFor="payment-terms"
-                  className="payment-terms-text body-1"
-                >
-                  Payment Terms
-                </label>
-                <input
-                  type="text"
-                  id="payment-terms"
-                  className="custom-length-small-input"
-                  placeholder="Net 30 Days"
-                  name="payment-terms"
-                />
-              </div>
-            </div>
-            <div className="project-description-container">
-              <label
-                htmlFor="project-description"
-                className="project-description-text body-1"
-              >
-                Project Description
-              </label>
-              <input
-                type="text"
-                className="long-input-length"
-                name="project-description"
-                id="project-description"
-              />
-            </div>
-
-            <h1 className="item-list-text no-marg-padd">Item List</h1>
-            <div className="item-list-container-populate column">
-              <div className="item-container">
-                <div className="item-name-container">
-                  <div className="item-name-text body-1">Item Name</div>
-                  <input type="text" name="item-name" id="item-name" />
-                </div>
-                <div className="item-quantity-container">
-                  <div className="item-quantity-text body-1">QTY.</div>
-                  <input type="text" name="item-quantity" id="item-quantity" />
-                </div>
-                <div className="item-price-container">
-                  <div className="item-price-text body-1">Price</div>
-                  <input type="text" name="item-price" id="item-price" />
-                </div>
-                <div className="total-text-total-price-container">
-                  <div className="total-text-form body-1">Total</div>
-                  <h4 className="total-price no-marg-padd">$ 0.00</h4>
-                </div>
-                <div className="delete-btn-container">
-                  <img
-                    src="./assets/icon-delete.svg"
-                    alt="delete item button"
-                    className="delete-btn-img"
+                <div className="bill-from-country-container">
+                  <label
+                    htmlFor="bill-from-country"
+                    className="bill-from-country-text body-1"
+                  >
+                    Country
+                  </label>
+                  <input
+                    onChange={(e) => handleFormChange(e, "senderAddress")}
+                    value={formValues.senderAddress.country}
+                    type="text"
+                    className="small-input-length"
+                    name="country"
+                    id="bill-from-country"
                   />
                 </div>
               </div>
-            </div>
-            <div className="add-new-item-btn-container">
-              <h4 className="add-new-item-text">+ Add New Item</h4>
-            </div>
-            <div className="body-1 all-fields-text">
-              - All fields must be added
-            </div>
-            <div className="discard-save-as-draft-save-and-send-container">
-              <div className="discard-btn-container">
-                <h4 className="discard-text no-marg-padd">Discard</h4>
-              </div>
-              <div className="discard-save-btns-container-to-right">
-                <button
-                  className="save-as-draft--btn-container"
-                  id="submit"
-                  type="submit"
+
+              <h4 className="bill-to-text Form no-marg-padd">Bill To</h4>
+
+              <div className="bill-to-clients-name-container">
+                <label
+                  htmlFor="bill-to-clients-name"
+                  className="bill-to-clients-name-text body-1"
                 >
-                  <h4 className="save-as-draft-text no-marg-padd">
-                    Save as Draft
-                  </h4>
-                </button>
-                <div className="save-and-send-btn-container">
-                  <h4 className="save-and-send-text no-marg-padd">
-                    Save &amp; Send
-                  </h4>
+                  Client's Name
+                </label>
+                <input
+                  onChange={(e) => handleFormChange(e, "general")}
+                  value={formValues.clientName}
+                  type="text"
+                  className="long-input-length"
+                  name="clientName"
+                  id="bill-to-clients-name"
+                />
+              </div>
+
+              <div className="bill-to-clients-email-container">
+                <label
+                  htmlFor="bill-to-clients-email"
+                  className="bill-to-clients-email-text body-1"
+                >
+                  Client's Email
+                </label>
+                <input
+                  onChange={(e) => handleFormChange(e, "general")}
+                  value={formValues.clientEmail}
+                  type="text"
+                  className="long-input-length"
+                  name="clientEmail"
+                  id="bill-to-clients-email"
+                />
+              </div>
+
+              <div className="bill-to-clients-street-address-container">
+                <label
+                  htmlFor="bill-to-clients-street-address"
+                  className="bill-to-clients-street-address-text body-1"
+                >
+                  Street Address
+                </label>
+                <input
+                  onChange={(e) => handleFormChange(e, "clientAddress")}
+                  value={formValues.clientAddress.street}
+                  type="text"
+                  className="long-input-length"
+                  name="street"
+                  id="bill-to-clients-street-address"
+                />
+              </div>
+
+              <div className="bill-to-city-postal-country-container">
+                <div className="bill-to-city-container">
+                  <label
+                    htmlFor="bill-to-city"
+                    className="bill-to-city-text body-1"
+                  >
+                    City
+                  </label>
+                  <input
+                    onChange={(e) => handleFormChange(e, "clientAddress")}
+                    value={formValues.clientAddress.city}
+                    type="text"
+                    className="small-input-length"
+                    name="city"
+                    id="bill-to-city"
+                  />
+                </div>
+                <div className="bill-to-postal-code-container">
+                  <label
+                    htmlFor="bill-to-postal-code"
+                    className="bill-to-postal-code-text body-1"
+                  >
+                    Postal Code
+                  </label>
+                  <input
+                    onChange={(e) => handleFormChange(e, "clientAddress")}
+                    value={formValues.clientAddress.postCode}
+                    type="text"
+                    className="small-input-length"
+                    name="postCode"
+                    id="bill-to-postal-code"
+                  />
+                </div>
+                <div className="bill-to-country-container">
+                  <label
+                    htmlFor="bill-to-country"
+                    className="bill-to-country-text body-1"
+                  >
+                    Country
+                  </label>
+                  <input
+                    onChange={(e) => handleFormChange(e, "clientAddress")}
+                    value={formValues.clientAddress.country}
+                    type="text"
+                    className="small-input-length"
+                    name="country"
+                    id="bill-to-country"
+                  />
                 </div>
               </div>
-            </div>
-          </form>
 
-          <div className="mobile-scrolling-cover" />
-          <div className="footer-mobile-buttons-container-new-form">
+              <div className="invoice-date-payment-terms-container-to-break">
+                <div className="invoice-date-container">
+                  <label
+                    htmlFor="invoice-date"
+                    className="invoice-date-text body-1"
+                  >
+                    Due Date
+                  </label>
+                  <input
+                    onChange={(e) => handleFormChange(e, "general")}
+                    value={formValues.paymentDue}
+                    type="date"
+                    className="custom-length-small-input"
+                    name="paymentDue"
+                    id="invoice-date"
+                  />
+                </div>
+                <div className="payment-terms-container">
+                  <label
+                    htmlFor="payment-terms"
+                    className="payment-terms-text body-1"
+                  >
+                    Payment Terms
+                  </label>
+                  <input
+                    onChange={(e) => handleFormChange(e, "general")}
+                    value={formValues.paymentTerms}
+                    type="text"
+                    id="payment-terms"
+                    className="custom-length-small-input"
+                    placeholder="Due on Receipt"
+                    name="paymentTerms"
+                  />
+                </div>
+              </div>
+
+              <div className="project-description-container">
+                <label
+                  htmlFor="project-description"
+                  className="project-description-text body-1"
+                >
+                  Project Description
+                </label>
+                <input
+                  onChange={(e) => handleFormChange(e, "general")}
+                  value={formValues.description}
+                  type="text"
+                  className="long-input-length"
+                  name="description"
+                  id="project-description"
+                />
+              </div>
+
+              <ItemList formValues={formValues} setFormValues={setFormValues} />
+
+              <div className="body-1 all-fields-text">
+                - All fields must be added
+              </div>
+
+              <div className="discard-save-as-draft-save-and-send-container">
+                <div className="discard-btn-container">
+                  <h4 className="discard-text no-marg-padd">Discard</h4>
+                </div>
+                <div className="discard-save-btns-container-to-right">
+                  <button
+                    className="save-as-draft--btn-container"
+                    id="submit"
+                    type="submit"
+                  >
+                    <h4 className="save-as-draft-text no-marg-padd">
+                      Save as Draft
+                    </h4>
+                  </button>
+                  <div className="save-and-send-btn-container">
+                    <h4 className="save-and-send-text no-marg-padd">
+                      Save &amp; Send
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <div className="mobile-scrolling-cover" />
+            {/* <div className="footer-mobile-buttons-container-new-form">
             <div className="discard-save-as-draft-save-and-send-container-display-at-media-mobile">
               <div className="discard-btn-container-media-mobile">
                 <h4 className="discard-text-media-mobile no-marg-padd">
@@ -393,8 +473,9 @@ export default function InvoiceForm({ handleFormOpen, formOpen }) {
                 </div>
               </div>
             </div>
+          </div> */}
           </div>
-        </div>
+        </>
       )}
     </StyledInvoiceForm>
   );
