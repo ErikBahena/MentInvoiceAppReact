@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import InvoiceActionButtons from "./InvoiceActionButtons";
 import ItemList from "./ItemList";
 
 const StyledInvoiceForm = styled.div`
@@ -136,14 +137,14 @@ const initialFormValues = {
 
   items: [
     {
-      name: "Brand Guidelines",
-      price: 1800.9,
-      quantity: 1,
-      total: 1800.9,
+      name: "",
+      price: 0,
+      quantity: 0,
+      total: 0,
     },
   ],
 
-  total: 1840.9,
+  total: 0,
 };
 
 export default function InvoiceForm({ handleFormOpen, formOpen }) {
@@ -421,59 +422,14 @@ export default function InvoiceForm({ handleFormOpen, formOpen }) {
 
               <ItemList formValues={formValues} setFormValues={setFormValues} />
 
-              <div className="body-1 all-fields-text">
+              {/* <div className="body-1 all-fields-text">
                 - All fields must be added
-              </div>
+              </div> */}
 
-              <div className="discard-save-as-draft-save-and-send-container">
-                <div className="discard-btn-container">
-                  <h4 className="discard-text no-marg-padd">Discard</h4>
-                </div>
-                <div className="discard-save-btns-container-to-right">
-                  <button
-                    className="save-as-draft--btn-container"
-                    id="submit"
-                    type="submit"
-                  >
-                    <h4 className="save-as-draft-text no-marg-padd">
-                      Save as Draft
-                    </h4>
-                  </button>
-                  <div className="save-and-send-btn-container">
-                    <h4 className="save-and-send-text no-marg-padd">
-                      Save &amp; Send
-                    </h4>
-                  </div>
-                </div>
-              </div>
+              <InvoiceActionButtons />
             </form>
 
             <div className="mobile-scrolling-cover" />
-            {/* <div className="footer-mobile-buttons-container-new-form">
-            <div className="discard-save-as-draft-save-and-send-container-display-at-media-mobile">
-              <div className="discard-btn-container-media-mobile">
-                <h4 className="discard-text-media-mobile no-marg-padd">
-                  Discard
-                </h4>
-              </div>
-              <div className="discard-save-btns-container-to-right-media-mobile">
-                <button
-                  className="save-as-draft--btn-container-media-mobile"
-                  id="submit"
-                  type="submit"
-                >
-                  <h4 className="save-as-draft-text-media-mobile no-marg-padd">
-                    Save as Draft
-                  </h4>
-                </button>
-                <div className="save-and-send-btn-container-media-mobile">
-                  <h4 className="save-and-send-text-media-mobile no-marg-padd">
-                    Save &amp; Send
-                  </h4>
-                </div>
-              </div>
-            </div>
-          </div> */}
           </div>
         </>
       )}

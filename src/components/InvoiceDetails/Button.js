@@ -19,14 +19,21 @@ const StyledButton = styled.button`
     color: var(--clr-general-white);
   }
 
-  &.mark-paid {
+  &.mark-paid,
+  &.sign-up,
+  &.primary {
     background-color: var(--clr-primary-purple);
     color: var(--clr-general-white);
   }
 
-  &.sign-up {
-    background-color: var(--clr-primary-purple);
-    color: var(--clr-general-white);
+  &.discard {
+    background-color: var(--clr-item-totals-background);
+    color: var(--clr-terciary-purple);
+  }
+
+  &.draft {
+    background-color: var(--clr-nav-purple-gray);
+    color: var(--clr-text-faded);
   }
 `;
 

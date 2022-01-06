@@ -80,58 +80,141 @@ const StyledItemComponent = styled.div`
     color: var(--clr-terciary-purple);
     border-radius: 1.5rem;
 
+    margin-bottom: 2.938rem;
+
     &:hover {
       cursor: pointer;
+      border: 2px solid var(--clr-primary-purple);
     }
   }
 `;
 
-export default function ItemList() {
+export default function ItemList({ formValues, setFormValues }) {
+  const handleItemChange = (e) => {
+    const itemIndex = +e.target.closest(".item-container").dataset.id;
+
+    const newItems = [...formValues.items];
+
+    let total;
+
+    if (e.target.name === "price")
+      total = e.target.value * newItems[itemIndex].quantity;
+
+    if (e.target.name === "quantity")
+      total = e.target.value * newItems[itemIndex].price;
+
+    newItems[itemIndex] = {
+      ...newItems[itemIndex],
+      [e.target.name]: e.target.value,
+      total,
+    };
+
+    const grandTotal = newItems.reduce((acc, obj) => {
+      return acc + obj.total;
+    }, 0);
+
+    setFormValues({ ...formValues, items: newItems, total: grandTotal });
+  };
+
+  const handleAddItem = (e) => {
+    const newItem = { name: "", price: 0, quantity: 0, total: 0.0 };
+
+    setFormValues({
+      ...formValues,
+      items: [...formValues.items, { ...newItem }],
+    });
+
+    e.target.closest("div").scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleItemDeletion = (e) => {
+    if (formValues.items.length === 1) return;
+
+    const itemIndex = +e.target.closest(".item-container").dataset.id;
+
+    const newItems = [...formValues.items];
+
+    newItems.splice(newItems[itemIndex], 1);
+
+    const grandTotal = newItems.reduce((acc, obj) => {
+      return acc + obj.total;
+    }, 0);
+
+    setFormValues({ ...formValues, items: newItems, total: grandTotal });
+  };
+
   return (
     <StyledItemComponent>
       <h1 className="item-list-text no-marg-padd">Item List</h1>
 
       <div className="item-list-container-populate column">
-        <div className="item-container">
-          <div className="item-name-container">
-            <label htmlFor="item-name" className="item-name-text body-1">
-              Item Name
-            </label>
-            <input type="text" name="item-name" id="item-name" />
-          </div>
-          <div className="item-quantity-container">
-            <label
-              htmlFor="item-quantity"
-              className="item-quantity-text body-1"
-            >
-              QTY.
-            </label>
-            <input type="text" name="item-quantity" id="item-quantity" />
-          </div>
+        {formValues.items.map((item, i) => {
+          return (
+            <div key={i} data-id={i} className="item-container">
+              <div className="item-name-container">
+                <label htmlFor="item-name" className="item-name-text body-1">
+                  Item Name
+                </label>
+                <input
+                  onChange={handleItemChange}
+                  value={item.name}
+                  type="text"
+                  name="name"
+                  id="item-name"
+                />
+              </div>
+              <div className="item-quantity-container">
+                <label
+                  htmlFor="item-quantity"
+                  className="item-quantity-text body-1"
+                >
+                  QTY.
+                </label>
+                <input
+                  onChange={handleItemChange}
+                  value={item.quantity}
+                  type="text"
+                  name="quantity"
+                  id="item-quantity"
+                />
+              </div>
 
-          <div className="item-price-container">
-            <label htmlFor="item-price" className="item-price-text body-1">
-              Price
-            </label>
-            <input type="text" name="item-price" id="item-price" />
-          </div>
+              <div className="item-price-container">
+                <label htmlFor="item-price" className="item-price-text body-1">
+                  Price
+                </label>
+                <input
+                  onChange={handleItemChange}
+                  value={item.price}
+                  type="text"
+                  name="price"
+                  id="item-price"
+                />
+              </div>
 
-          <div className="total-text-total-price-container">
-            <div className="total-text-form body-1">Total</div>
-            <h4 className="total-price no-marg-padd">$ 0.00</h4>
-          </div>
+              <div className="total-text-total-price-container">
+                <div className="total-text-form body-1">Total</div>
+                <h4 className="total-price no-marg-padd">
+                  ${(item.price * item.quantity).toFixed(2)}
+                </h4>
+              </div>
 
-          <div className="delete-btn-container">
-            <img
-              src={deleteBtnImg}
-              alt="delete item button"
-              className="delete-btn-img"
-            />
-          </div>
-        </div>
+              <div
+                className="delete-btn-container"
+                onClick={handleItemDeletion}
+              >
+                <img
+                  src={deleteBtnImg}
+                  alt="delete item button"
+                  className="delete-btn-img"
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      <div className="add-new-item-btn-container">
+      <div onClick={handleAddItem} className="add-new-item-btn-container">
         <h4 className="add-new-item-text">+ Add New Item</h4>
       </div>
     </StyledItemComponent>
