@@ -146,7 +146,11 @@ function InvoiceControlPanel({ invoicesCount }) {
   return (
     <>
       {formOpen && (
-        <InvoiceForm handleFormOpen={handleFormOpen} formOpen={formOpen} />
+        <InvoiceForm
+          handleFormOpen={handleFormOpen}
+          formOpen={formOpen}
+          type="New Invoice"
+        />
       )}
 
       <StyledInvoiceControlPanel>

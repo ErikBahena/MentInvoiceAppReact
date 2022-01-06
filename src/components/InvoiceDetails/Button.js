@@ -37,9 +37,9 @@ const StyledButton = styled.button`
   }
 `;
 
-export default function Button({ type, text }) {
+export default function Button({ type, text, ...restAttrib }) {
   return (
-    <StyledButton className={type}>
+    <StyledButton {...restAttrib} className={type}>
       <h4>{text}</h4>
     </StyledButton>
   );

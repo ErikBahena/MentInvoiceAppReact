@@ -4,14 +4,14 @@ import InvoiceActionButtons from "./InvoiceActionButtons";
 import ItemList from "./ItemList";
 
 const StyledInvoiceForm = styled.div`
-  .new-invoice-container-background {
+  .invoice-container-background {
     position: fixed;
     height: 100%;
     width: 100%;
     background-color: var(--clr-opacity-mask-black);
   }
 
-  .new-invoice-form-container {
+  .invoice-form-container {
     z-index: 1;
     background-color: var(--clr-general-white);
     position: absolute;
@@ -147,7 +147,7 @@ const initialFormValues = {
   total: 0,
 };
 
-export default function InvoiceForm({ handleFormOpen, formOpen }) {
+export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
   const [formValues, setFormValues] = useState(initialFormValues);
 
   const handleFormChange = (e, type) => {
@@ -183,14 +183,14 @@ export default function InvoiceForm({ handleFormOpen, formOpen }) {
       {formOpen && (
         <>
           <div
-            className="new-invoice-container-background"
+            className="invoice-container-background"
             onClick={handleFormOpen}
           />
 
-          <div className="new-invoice-form-container">
-            <h1 className="new-invoice-text no-marg-padd">New Invoice</h1>
+          <div className="invoice-form-container">
+            <h1 className="invoice-text no-marg-padd">{type}</h1>
 
-            <form>
+            <form onSubmit={(e) => e.preventDefault()}>
               <h4 className="bill-from-text no-marg-padd">Bill From</h4>
 
               <div className="bill-from-street-address-container">
@@ -426,7 +426,13 @@ export default function InvoiceForm({ handleFormOpen, formOpen }) {
                 - All fields must be added
               </div> */}
 
-              <InvoiceActionButtons />
+              <InvoiceActionButtons
+                handleFormOpen={handleFormOpen}
+                setFormValues={setFormValues}
+                initialFormValues={initialFormValues}
+                formValues={formValues}
+                type={type}
+              />
             </form>
 
             <div className="mobile-scrolling-cover" />
