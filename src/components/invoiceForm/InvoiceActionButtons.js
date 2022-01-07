@@ -11,7 +11,23 @@ const StyledInvoiceActionButtons = styled.div`
 
   .discard-send-container {
     display: flex;
-    gap: 16px;
+    gap: 2vw;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    div {
+      flex-wrap: wrap;
+    }
+
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 0px 100px 1px;
+    flex-wrap: wrap;
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 1em;
   }
 `;
 
@@ -54,11 +70,17 @@ function InvoiceActionButtons({
       )}
 
       <div className="discard-send-container">
-        <Button onClick={handleSaveAsDraft} type="draft" text="Save as Draft" />
+        <Button
+          onClick={handleSaveAsDraft}
+          type="draft"
+          text="Save as Draft"
+          responsiveText="Draft"
+        />
         <Button
           onClick={handleSaveAndSend}
           type="primary"
-          text="Save &amp; Send"
+          text="Save & Send"
+          responsiveText="Send"
         />
       </div>
     </StyledInvoiceActionButtons>

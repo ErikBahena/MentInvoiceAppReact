@@ -21,6 +21,11 @@ const StyledInvoiceForm = styled.div`
     border-radius: 0 1.25em 1.25em 0;
     max-width: 38.438em;
     padding: 3.5em 3.5em 2em 3.5em;
+
+    @media (min-width: 1440px) {
+      top: 0;
+      left: var(--nav-height-mobile);
+    }
   }
 
   form {
@@ -69,8 +74,9 @@ const StyledInvoiceForm = styled.div`
   }
 
   label.body-1 {
+    display: inline-block;
     color: var(--clr-terciary-purple);
-    margin-bottom: 0.625rem;
+    margin-bottom: 0.5em;
   }
 
   .bill-from-text,
@@ -109,6 +115,99 @@ const StyledInvoiceForm = styled.div`
   .invoice-date-container,
   .payment-terms-container {
     width: 47.6190476%;
+  }
+
+  // responsiveness
+  @media (max-width: 768px) {
+    .invoice-form-container {
+      max-width: none;
+      width: 100%;
+      border-radius: 0 0 0 0;
+      padding: 2.75em 2.75em 1.25em 2.75em;
+
+      @media (max-width: 425px) {
+        padding: 2em 1.5em 0 1.5em;
+      }
+    }
+
+    .city-postal-country-container,
+    .bill-to-city-postal-country-container {
+      flex-wrap: wrap;
+    }
+
+    .city-postal-country-container div,
+    .bill-to-city-postal-country-container div {
+      width: max(40%, 300px);
+
+      input {
+        width: 100%;
+      }
+
+      &.bill-from-country-container,
+      &.bill-to-country-container {
+        @media (min-width: 708px) {
+          margin-top: 24px;
+        }
+      }
+
+      &.bill-from-postal-code-container,
+      &.bill-to-postal-code-container {
+        @media (max-width: 707px) {
+          margin-right: 10px;
+        }
+      }
+
+      &.bill-to-city-container,
+      &.bill-from-city-container {
+        margin-right: 20px;
+      }
+
+      @media (max-width: 707px) {
+        &.bill-from-country-container,
+        &.bill-from-postal-code-container,
+        &.bill-to-postal-code-container,
+        &.bill-to-country-container {
+          margin-top: 24px;
+        }
+      }
+
+      @media (max-width: 697px) {
+        width: max(100%, 300px);
+
+        &.bill-from-city-container,
+        &.bill-from-postal-code-container,
+        &.bill-to-postal-code-container,
+        &.bill-to-city-container {
+          margin-right: 0px;
+        }
+      }
+    }
+
+    .invoice-date-payment-terms-container-to-break {
+      flex-wrap: wrap;
+
+      div {
+        width: max(45%, 300px);
+      }
+
+      .invoice-date-container {
+        margin-right: 20px;
+      }
+
+      @media (max-width: 707px) {
+        .payment-terms-container {
+          margin-top: 24px;
+        }
+
+        div {
+          width: 100%;
+        }
+
+        .invoice-date-container {
+          margin-right: 0;
+        }
+      }
+    }
   }
 `;
 

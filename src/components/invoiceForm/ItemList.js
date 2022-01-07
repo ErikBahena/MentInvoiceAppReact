@@ -26,18 +26,11 @@ const StyledItemComponent = styled.div`
 
   .item-name-container {
     width: 42.4603175%;
-
-    input {
-      min-width: 13.375rem;
-    }
   }
 
   .item-quantity-container {
     width: 9.1269841%;
-
-    input {
-      min-width: 3.3rem;
-    }
+    min-width: 3.3rem;
   }
 
   .item-price-container {
@@ -85,6 +78,40 @@ const StyledItemComponent = styled.div`
     &:hover {
       cursor: pointer;
       border: 2px solid var(--clr-primary-purple);
+    }
+  }
+
+  @media (max-width: 768px) {
+    /* new invoice item list */
+
+    .item-container {
+      flex-wrap: wrap;
+    }
+
+    .item-name-container {
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .item-quantity-container {
+      width: 19.5718%;
+    }
+    .item-price-container {
+      width: 30.5810398%;
+    }
+
+    #item-price {
+      min-width: 100%;
+      max-width: 100%;
+      margin-right: 0.5rem !important;
+    }
+
+    .add-new-item-btn-container {
+      margin-bottom: 100px;
+    }
+
+    .all-fields-text {
+      margin-bottom: 7rem !important;
     }
   }
 `;

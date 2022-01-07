@@ -8,6 +8,8 @@ import InvoiceStatus from "../InvoicesPanel/InvoiceStatus";
 import backArrow from "../../assets/icon-arrow-left.svg";
 import Button from "./Button";
 
+import { connect } from "react-redux";
+
 const StyledInvoiceDetails = styled.div`
   flex-direction: column;
   align-items: center;

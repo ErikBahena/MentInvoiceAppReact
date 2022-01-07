@@ -35,12 +35,35 @@ const StyledButton = styled.button`
     background-color: var(--clr-nav-purple-gray);
     color: var(--clr-text-faded);
   }
+
+  span.responsive {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    span {
+      display: none;
+    }
+
+    span.responsive {
+      display: unset;
+    }
+  }
 `;
 
-export default function Button({ type, text, ...restAttrib }) {
+export default function Button({ type, text, responsiveText, ...restAttrib }) {
   return (
     <StyledButton {...restAttrib} className={type}>
-      <h4>{text}</h4>
+      <h4>
+        {responsiveText ? (
+          <>
+            <span>{text}</span>
+            <span className="responsive">{responsiveText}</span>
+          </>
+        ) : (
+          `${text}`
+        )}
+      </h4>
     </StyledButton>
   );
 }

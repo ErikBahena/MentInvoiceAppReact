@@ -78,9 +78,10 @@ const StyledNavBar = styled.nav`
   }
 
   @media screen and (min-width: 1440px) {
-    min-height: 100vh;
-    width: max-content;
-    height: 100%;
+    width: var(--nav-height-mobile);
+    position: fixed;
+
+    height: max(100vh, 200px);
 
     display: flex;
     flex-direction: column;
@@ -108,19 +109,6 @@ const StyledNavBar = styled.nav`
       display: flex;
       flex-direction: column;
     }
-
-    /* the new invoice form responsiveness position for
-     desktop will be different because of the nav position */
-    // .new-invoice-form-container {
-    //   top: 0;
-    //   left: 4.5rem;
-    // }
-    // .invoice-control-container {
-    //   padding-top: 4.5rem;
-    // }
-    // .view-invoice-container {
-    //   padding-top: 1rem;
-    // }
   }
 `;
 
