@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import { login } from "../actions";
+import { access } from "../actions";
 import { connect } from "react-redux";
 
 const StyledSignUpSignIn = styled.div`
@@ -262,59 +262,79 @@ const StyledSignUpSignIn = styled.div`
   }
 `;
 
-const initialSignInValues = {
+const initialFormValues = {
   email: "",
   password: "",
 };
 
 function Access({ dispatch, userInfo }) {
   const [rightPanelActive, setRightPanelActive] = useState(false);
-  const [signInValues, setSignInValues] = useState(initialSignInValues);
-  const [signUpValues, setSignUpValues] = useState({});
+  const [signInValues, setSignInValues] = useState(initialFormValues);
+  const [signUpValues, setSignUpValues] = useState(initialFormValues);
 
   const navigate = useNavigate();
 
   const handleSignInChange = (e) => {
-    setSignInValues({ ...signInValues, [e.target.type]: e.target.value });
+    setSignInValues({ ...signInValues, [e.target.name]: e.target.value });
   };
 
-  const handleSignIn = (e) => {
+  const handleSignUpChange = (e) => {
+    setSignUpValues({ ...signUpValues, [e.target.name]: e.target.value });
+  };
+
+  const handleAccess = (e, formValues, type) => {
     e.preventDefault();
-    dispatch(login(signInValues));
-    navigate("/invoices");
+    const navigateCallback = () => navigate("/invoices");
+    dispatch(access(formValues, navigateCallback, type));
   };
 
   return (
     <StyledSignUpSignIn className={rightPanelActive && "right-panel-active"}>
       <div className="responsive-container">
         <div className="form-container sign-up-container">
-          <form action="#">
+          <form>
             <h1>Create Account</h1>
-            <input type="email" placeholder="Email" />
+            <input
+              onChange={handleSignUpChange}
+              type="email"
+              name="email"
+              placeholder="Email"
+            />
 
-            <input type="password" placeholder="Password" />
-            <button>Sign Up</button>
+            <input
+              onChange={handleSignUpChange}
+              type="password"
+              name="password"
+              placeholder="Password"
+            />
+            <button onClick={(e) => handleAccess(e, signUpValues, "register")}>
+              Sign Up
+            </button>
           </form>
         </div>
 
         <div className="form-container sign-in-container">
-          <form onSubmit={handleSignIn}>
+          <form>
             <h1>Sign in</h1>
 
             <input
               onChange={handleSignInChange}
               value={signInValues.email}
               type="email"
+              name="email"
               placeholder="Email"
             />
             <input
               onChange={handleSignInChange}
               value={signInValues.password}
               type="password"
+              name="password"
               placeholder="Password"
             />
             <p>{/* <a href="#">Forgot your password?</a> */}</p>
-            <button type="submit">Sign In</button>
+            <button onClick={(e) => handleAccess(e, signInValues, "login")}>
+              Sign In
+            </button>
             {/* <button>Guest Account</button> */}
           </form>
         </div>

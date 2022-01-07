@@ -9,18 +9,14 @@ import {
   LOGIN_SUCCESS,
 } from "../actions";
 
-import { getMockData } from "../services";
-
-const initialInvoices = getMockData();
-
 export const initialState = {
   isLoading: false,
   errorMessage: "",
-  invoices: initialInvoices,
+  invoices: [],
 };
 
 const orderInvoices = (orderBy, invoices) => {
-  if (orderBy === "none") return initialInvoices;
+  if (orderBy === "none") return invoices;
 
   const desiredInvoices = invoices.filter((inv) => inv.status === orderBy);
 
@@ -34,6 +30,7 @@ const reducer = (state = initialState, action) => {
     case LOGIN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("userIcon", action.payload.photo_url);
+      localStorage.setItem("user_id", action.payload.user_id);
 
       return {
         ...state,
@@ -44,9 +41,7 @@ const reducer = (state = initialState, action) => {
     case FETCH_START:
       return {
         ...state,
-        invoices: [],
         isLoading: true,
-        errorMessage: "",
       };
     case FETCH_SUCCESS:
       return {

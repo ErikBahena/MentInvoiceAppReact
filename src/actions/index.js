@@ -1,4 +1,5 @@
 import axios from "axios";
+import axiosWithAuth from "../utils/axiosWithAuth";
 
 export const FETCH_START = "FETCH_START";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
@@ -9,23 +10,26 @@ export const EDIT_INVOICE = "EDIT_INVOICE";
 export const ORDER_INVOICES = "ORDER_INVOICES";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 
-export const login = (userInfo) => {
+export const access = (userInfo, callback, type) => {
   return async (dispatch) => {
     dispatch(fetchStart());
 
     axios
-      .post("https://ment-invoice-app.herokuapp.com/api/auth/login", userInfo)
-      .then((res) => dispatch(loginSuccess(res.data)))
+      .post(`https://ment-invoice-app.herokuapp.com/api/auth/${type}`, userInfo)
+      .then((res) => {
+        dispatch(loginSuccess(res.data));
+        callback();
+      })
       .catch((err) => dispatch(fetchError(err.message)));
   };
 };
 
-export const fetchInvoices = (id) => {
+export const fetchInvoices = (user_id) => {
   return async (dispatch) => {
     dispatch(fetchStart());
 
-    axios
-      .get(`http://localhost:9000/api/invoices${id}`)
+    axiosWithAuth()
+      .get(`/invoices/${+user_id}/invoices`)
       .then((res) => {
         dispatch(fetchSuccess(res.data));
       })
@@ -33,10 +37,10 @@ export const fetchInvoices = (id) => {
   };
 };
 
-export const addInvoice = (newInvoice) => {
+export const addInvoice = (newInvoice, user_id) => {
   return (dispatch) => {
-    axios
-      .post("http://localhost:3333/smurfs", newInvoice)
+    axiosWithAuth()
+      .post(`/invoices/${user_id}`, newInvoice)
       .then((res) => {
         dispatch(fetchSuccess(res.data));
       })

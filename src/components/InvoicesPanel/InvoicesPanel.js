@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
+import { fetchInvoices } from "../../actions";
 
 import chevronRight from "../../assets/icon-arrow-right.svg";
 
@@ -159,8 +160,13 @@ const StyledInvoicePanel = styled.div`
   }
 `;
 
-function InvoicesPanel({ invoices, isLoading }) {
+function InvoicesPanel({ invoices, isLoading, dispatch }) {
+  const user_id = localStorage.getItem("user_id");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchInvoices(+user_id));
+  }, []);
 
   const handleInvoiceClick = ({ target }) => {
     navigate(`/invoice/${target.closest(".invoice").dataset.id}`);
