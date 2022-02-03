@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
 import Button from "../InvoiceDetails/Button";
 
@@ -13,6 +14,12 @@ const StyledInvoiceActionButtons = styled.div`
     display: flex;
     gap: 2vw;
     white-space: nowrap;
+  }
+
+  button:disabled,
+  button[disabled] {
+    cursor: not-allowed;
+    background-color: #cccccc;
   }
 
   @media (max-width: 768px) {
@@ -37,12 +44,14 @@ function InvoiceActionButtons({
   setFormValues,
   formValues,
   type,
+  isFormValid,
 }) {
   const handleDiscardClick = (e) => {
     e.preventDefault();
     setFormValues(initialFormValues);
     handleFormOpen();
   };
+
   const handleCancelClick = (e) => {
     // e.preventDefault();
     // setFormValues(initialFormValues);
@@ -75,12 +84,14 @@ function InvoiceActionButtons({
           type="draft"
           text="Save as Draft"
           responsiveText="Draft"
+          disabled={!isFormValid}
         />
         <Button
           onClick={handleSaveAndSend}
           type="primary"
           text="Save & Send"
           responsiveText="Send"
+          disabled={!isFormValid}
         />
       </div>
     </StyledInvoiceActionButtons>

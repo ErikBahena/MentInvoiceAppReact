@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { validate } from "../../formValidation";
 import styled from "styled-components";
 import InvoiceActionButtons from "./InvoiceActionButtons";
 import ItemList from "./ItemList";
@@ -245,15 +246,56 @@ const initialFormValues = {
 
   total: 0,
 };
+const initialFormErrors = {
+  paymentDue: "",
+  description: "",
+  paymentTerms: "",
+
+  clientName: "",
+  clientEmail: "",
+
+  senderAddress: {
+    city: "",
+    country: "",
+    postCode: "",
+    street: "",
+  },
+
+  clientAddress: {
+    city: "",
+    country: "",
+    postCode: "",
+    street: "",
+  },
+
+  items: [
+    {
+      name: "",
+      price: 0,
+      quantity: 0,
+      total: 0,
+    },
+  ],
+};
 
 export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
   const [formValues, setFormValues] = useState(initialFormValues);
+  const [formErrors, setFormErrors] = useState(initialFormErrors);
+  const [isFormValid, setFormValidity] = useState(false);
+
+  // useEffect(() => {
+  //   formSchema.isValid(state.credentials).then((valid) => setDisabled(!valid));
+  // }, [state.credentials]);
 
   const handleFormChange = (e, type) => {
     const name = e.target.name;
     const value = e.target.value;
+    console.log(name, value);
 
-    if (type === "senderAddress")
+    if (type === "senderAddress" || type === "clientAddress")
+      validate(name, value, setFormErrors, formErrors, type);
+
+    if (type === "senderAddress") {
       setFormValues({
         ...formValues,
         senderAddress: {
@@ -261,7 +303,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
           [name]: value,
         },
       });
-    else if (type === "clientAddress")
+    } else if (type === "clientAddress") {
       setFormValues({
         ...formValues,
         clientAddress: {
@@ -269,7 +311,8 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
           [name]: value,
         },
       });
-    else if (type === "general") {
+    } else if (type === "general") {
+      validate(name, value, setFormErrors, formErrors);
       setFormValues({
         ...formValues,
         [name]: value,
@@ -279,6 +322,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
 
   return (
     <StyledInvoiceForm>
+      {console.log(formErrors)}
       {formOpen && (
         <>
           <div
@@ -307,6 +351,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                   name="street"
                   id="bill-from-street-address"
                 />
+                <p>{formErrors.senderAddress.street}</p>
               </div>
 
               <div className="city-postal-country-container">
@@ -325,6 +370,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     name="city"
                     id="bill-from-city"
                   />
+                  <p>{formErrors.senderAddress.city}</p>
                 </div>
 
                 <div className="bill-from-postal-code-container">
@@ -342,6 +388,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     name="postCode"
                     id="bill-from-postal-code"
                   />
+                  <p>{formErrors.senderAddress.postCode}</p>
                 </div>
 
                 <div className="bill-from-country-container">
@@ -359,6 +406,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     name="country"
                     id="bill-from-country"
                   />
+                  <p>{formErrors.senderAddress.country}</p>
                 </div>
               </div>
 
@@ -531,6 +579,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                 initialFormValues={initialFormValues}
                 formValues={formValues}
                 type={type}
+                isFormValid={isFormValid}
               />
             </form>
 
