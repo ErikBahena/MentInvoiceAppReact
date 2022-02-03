@@ -13,14 +13,13 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const access = (userInfo, callback, type) => {
   return async (dispatch) => {
     dispatch(fetchStart());
-
     axios
-      .post(`https://ment-invoice-app.herokuapp.com/api/auth/${type}`, userInfo)
+      .post(`http://localhost:9000/api/auth/${type}`, userInfo)
       .then((res) => {
         dispatch(loginSuccess(res.data));
         callback();
       })
-      .catch((err) => dispatch(fetchError(err.message)));
+      .catch((err) => dispatch(fetchError(err.response.data.message)));
   };
 };
 

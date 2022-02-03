@@ -267,7 +267,7 @@ const initialFormValues = {
   password: "",
 };
 
-function Access({ dispatch, userInfo }) {
+function Access({ dispatch, userInfo, errorMessage }) {
   const [rightPanelActive, setRightPanelActive] = useState(false);
   const [signInValues, setSignInValues] = useState(initialFormValues);
   const [signUpValues, setSignUpValues] = useState(initialFormValues);
@@ -307,6 +307,7 @@ function Access({ dispatch, userInfo }) {
               name="password"
               placeholder="Password"
             />
+            {errorMessage ? <p>{errorMessage}</p> : <p></p>}
             <button onClick={(e) => handleAccess(e, signUpValues, "register")}>
               Sign Up
             </button>
@@ -375,7 +376,7 @@ function Access({ dispatch, userInfo }) {
 }
 
 const mapStateToProps = (state) => {
-  return { userInfo: state.userInfo };
+  return { userInfo: state.userInfo, errorMessage: state.errorMessage };
 };
 
 export default connect(mapStateToProps)(Access);

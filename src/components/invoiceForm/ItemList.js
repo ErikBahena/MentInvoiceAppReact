@@ -161,7 +161,7 @@ export default function ItemList({ formValues, setFormValues }) {
 
     const newItems = [...formValues.items];
 
-    newItems.splice(newItems[itemIndex], 1);
+    newItems.splice(itemIndex, 1);
 
     const grandTotal = newItems.reduce((acc, obj) => {
       return acc + obj.total;
