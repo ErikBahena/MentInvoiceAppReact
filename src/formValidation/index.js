@@ -1,23 +1,56 @@
 import * as yup from "yup";
 
+export const formValueSchema = yup.object().shape({
+  street: yup.string().required("*"),
+  city: yup.string().required("*"),
+  postCode: yup.string().required("*"),
+  country: yup.string().required("*"),
+  clientName: yup.string().required("*"),
+  clientEmail: yup.string().email("^").required("*"),
+  paymentDue: yup.date("*"),
+  paymentTerms: yup.string().required("*"),
+  description: yup.string().required("*"),
+});
+
 export const formSchema = yup.object().shape({
-  street: yup.string().required("required"),
-  city: yup.string().required("required"),
-  postCode: yup.string().required("required"),
-  country: yup.string().required("required"),
-  clientName: yup.string().required("required"),
-  clientEmail: yup.string().email("must be a valid email").required("required"),
+  paymentDue: yup.string().required(),
+  description: yup.string().required(),
+  paymentTerms: yup.string().required(),
+  clientName: yup.string().required(),
+  clientEmail: yup.string().email().required(),
+
+  senderAddress: yup.object({
+    street: yup.string().required("*"),
+    city: yup.string().required("*"),
+    postCode: yup.string().required("*"),
+    country: yup.string().required("*"),
+  }),
+
+  clientAddress: yup.object({
+    street: yup.string().required("*"),
+    city: yup.string().required("*"),
+    postCode: yup.string().required("*"),
+    country: yup.string().required("*"),
+  }),
+
+  items: yup.array().of(
+    yup.object({
+      name: yup.string().required("*"),
+      price: yup.number().min(0),
+      quantity: yup.number().min(0),
+    })
+  ),
 });
 
 export const validate = (name, value, setFormErrors, formErrors, type) => {
   yup
-    .reach(formSchema, name)
+    .reach(formValueSchema, name)
     .validate(value)
     .then(() => {
-      if (type !== "senderAddress" && type !== "clientAddress")
+      if (!type)
         setFormErrors({
           ...formErrors,
-          [name]: value,
+          [name]: "",
         });
       else
         setFormErrors({
