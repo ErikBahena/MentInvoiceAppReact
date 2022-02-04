@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { validate } from "../../formValidation";
+import React, { useState, useEffect } from "react";
+import { validate, formSchema } from "../../formValidation";
 import styled from "styled-components";
 import InvoiceActionButtons from "./InvoiceActionButtons";
 import ItemList from "./ItemList";
@@ -55,6 +55,20 @@ const StyledInvoiceForm = styled.div`
   }
   input {
     font-size: 0.75rem;
+  }
+
+  .error-message {
+    color: var(--clr-danger) !important;
+  }
+
+  p.error-form-message {
+    margin-bottom: 2em;
+  }
+
+  span.error-message {
+    margin: 0;
+    padding: 0;
+    font-size: 1.2rem;
   }
 
   // input container styling
@@ -283,14 +297,13 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
   const [formErrors, setFormErrors] = useState(initialFormErrors);
   const [isFormValid, setFormValidity] = useState(false);
 
-  // useEffect(() => {
-  //   formSchema.isValid(state.credentials).then((valid) => setDisabled(!valid));
-  // }, [state.credentials]);
+  useEffect(() => {
+    formSchema.isValid(formValues).then((valid) => setFormValidity(valid));
+  }, [formValues]);
 
   const handleFormChange = (e, type) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value);
 
     if (type === "senderAddress" || type === "clientAddress")
       validate(name, value, setFormErrors, formErrors, type);
@@ -311,7 +324,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
           [name]: value,
         },
       });
-    } else if (type === "general") {
+    } else {
       validate(name, value, setFormErrors, formErrors);
       setFormValues({
         ...formValues,
@@ -342,6 +355,9 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                   className="bill-from-street-address-label body-1"
                 >
                   Street Address
+                  <span className="error-message body-1">
+                    {formErrors.senderAddress.street}
+                  </span>
                 </label>
                 <input
                   onChange={(e) => handleFormChange(e, "senderAddress")}
@@ -351,7 +367,6 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                   name="street"
                   id="bill-from-street-address"
                 />
-                <p>{formErrors.senderAddress.street}</p>
               </div>
 
               <div className="city-postal-country-container">
@@ -361,6 +376,9 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     className="bill-from-city-text body-1"
                   >
                     City
+                    <span className="error-message body-1">
+                      {formErrors.senderAddress.city}
+                    </span>
                   </label>
                   <input
                     onChange={(e) => handleFormChange(e, "senderAddress")}
@@ -370,7 +388,6 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     name="city"
                     id="bill-from-city"
                   />
-                  <p>{formErrors.senderAddress.city}</p>
                 </div>
 
                 <div className="bill-from-postal-code-container">
@@ -379,6 +396,9 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     className="bill-from-postal-code-text body-1"
                   >
                     Postal Code
+                    <span className="error-message body-1">
+                      {formErrors.senderAddress.postCode}
+                    </span>
                   </label>
                   <input
                     onChange={(e) => handleFormChange(e, "senderAddress")}
@@ -388,7 +408,6 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     name="postCode"
                     id="bill-from-postal-code"
                   />
-                  <p>{formErrors.senderAddress.postCode}</p>
                 </div>
 
                 <div className="bill-from-country-container">
@@ -397,6 +416,9 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     className="bill-from-country-text body-1"
                   >
                     Country
+                    <span className="error-message body-1">
+                      {formErrors.senderAddress.country}
+                    </span>
                   </label>
                   <input
                     onChange={(e) => handleFormChange(e, "senderAddress")}
@@ -406,7 +428,6 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     name="country"
                     id="bill-from-country"
                   />
-                  <p>{formErrors.senderAddress.country}</p>
                 </div>
               </div>
 
@@ -418,9 +439,12 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                   className="bill-to-clients-name-text body-1"
                 >
                   Client's Name
+                  <span className="error-message body-1">
+                    {formErrors.clientName}
+                  </span>
                 </label>
                 <input
-                  onChange={(e) => handleFormChange(e, "general")}
+                  onChange={(e) => handleFormChange(e)}
                   value={formValues.clientName}
                   type="text"
                   className="long-input-length"
@@ -435,9 +459,12 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                   className="bill-to-clients-email-text body-1"
                 >
                   Client's Email
+                  <span className="error-message body-1">
+                    {formErrors.clientEmail}
+                  </span>
                 </label>
                 <input
-                  onChange={(e) => handleFormChange(e, "general")}
+                  onChange={(e) => handleFormChange(e)}
                   value={formValues.clientEmail}
                   type="text"
                   className="long-input-length"
@@ -452,6 +479,9 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                   className="bill-to-clients-street-address-text body-1"
                 >
                   Street Address
+                  <span className="error-message body-1">
+                    {formErrors.clientAddress.street}
+                  </span>
                 </label>
                 <input
                   onChange={(e) => handleFormChange(e, "clientAddress")}
@@ -470,6 +500,9 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     className="bill-to-city-text body-1"
                   >
                     City
+                    <span className="error-message body-1">
+                      {formErrors.clientAddress.city}
+                    </span>
                   </label>
                   <input
                     onChange={(e) => handleFormChange(e, "clientAddress")}
@@ -480,12 +513,16 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     id="bill-to-city"
                   />
                 </div>
+
                 <div className="bill-to-postal-code-container">
                   <label
                     htmlFor="bill-to-postal-code"
                     className="bill-to-postal-code-text body-1"
                   >
                     Postal Code
+                    <span className="error-message body-1">
+                      {formErrors.clientAddress.postCode}
+                    </span>
                   </label>
                   <input
                     onChange={(e) => handleFormChange(e, "clientAddress")}
@@ -496,12 +533,16 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     id="bill-to-postal-code"
                   />
                 </div>
+
                 <div className="bill-to-country-container">
                   <label
                     htmlFor="bill-to-country"
                     className="bill-to-country-text body-1"
                   >
                     Country
+                    <span className="error-message body-1">
+                      {formErrors.clientAddress.country}
+                    </span>
                   </label>
                   <input
                     onChange={(e) => handleFormChange(e, "clientAddress")}
@@ -521,9 +562,12 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     className="invoice-date-text body-1"
                   >
                     Due Date
+                    <span className="error-message body-1">
+                      {formErrors.paymentDue}
+                    </span>
                   </label>
                   <input
-                    onChange={(e) => handleFormChange(e, "general")}
+                    onChange={(e) => handleFormChange(e)}
                     value={formValues.paymentDue}
                     type="date"
                     className="custom-length-small-input"
@@ -537,9 +581,12 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                     className="payment-terms-text body-1"
                   >
                     Payment Terms
+                    <span className="error-message body-1">
+                      {formErrors.paymentTerms}
+                    </span>
                   </label>
                   <input
-                    onChange={(e) => handleFormChange(e, "general")}
+                    onChange={(e) => handleFormChange(e)}
                     value={formValues.paymentTerms}
                     type="text"
                     id="payment-terms"
@@ -556,9 +603,12 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                   className="project-description-text body-1"
                 >
                   Project Description
+                  <span className="error-message body-1">
+                    {formErrors.description}
+                  </span>
                 </label>
                 <input
-                  onChange={(e) => handleFormChange(e, "general")}
+                  onChange={(e) => handleFormChange(e)}
                   value={formValues.description}
                   type="text"
                   className="long-input-length"
@@ -569,9 +619,11 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
 
               <ItemList formValues={formValues} setFormValues={setFormValues} />
 
-              {/* <div className="body-1 all-fields-text">
-                - All fields must be added
-              </div> */}
+              {!isFormValid && (
+                <p className="body-1 error-message error-form-message">
+                  * please fill out all required fields
+                </p>
+              )}
 
               <InvoiceActionButtons
                 handleFormOpen={handleFormOpen}
