@@ -28,7 +28,7 @@ export const fetchInvoices = (user_id) => {
     dispatch(fetchStart());
 
     axiosWithAuth()
-      .get(`/invoices/${+user_id}/invoices`)
+      .get(`/invoices/${user_id}`)
       .then((res) => {
         dispatch(fetchSuccess(res.data));
       })

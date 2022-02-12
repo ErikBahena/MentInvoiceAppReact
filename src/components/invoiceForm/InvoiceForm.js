@@ -290,6 +290,8 @@ const initialFormErrors = {
       total: 0,
     },
   ],
+
+  suggestions: [],
 };
 
 export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
@@ -301,26 +303,16 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
     formSchema.isValid(formValues).then((valid) => setFormValidity(valid));
   }, [formValues]);
 
-  const handleFormChange = (e, type) => {
+  const handleFormChange = async (e, type) => {
     const name = e.target.name;
     const value = e.target.value;
 
-    if (type === "senderAddress" || type === "clientAddress")
+    if (type) {
       validate(name, value, setFormErrors, formErrors, type);
-
-    if (type === "senderAddress") {
       setFormValues({
         ...formValues,
-        senderAddress: {
-          ...formValues.senderAddress,
-          [name]: value,
-        },
-      });
-    } else if (type === "clientAddress") {
-      setFormValues({
-        ...formValues,
-        clientAddress: {
-          ...formValues.clientAddress,
+        [type]: {
+          ...formValues[type],
           [name]: value,
         },
       });
@@ -335,7 +327,6 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
 
   return (
     <StyledInvoiceForm>
-      {console.log(formErrors)}
       {formOpen && (
         <>
           <div
@@ -621,7 +612,7 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
 
               {!isFormValid && (
                 <p className="body-1 error-message error-form-message">
-                  * please fill out all required fields
+                  {formErrors.suggestions.join("\n")}
                 </p>
               )}
 
@@ -630,6 +621,9 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                 setFormValues={setFormValues}
                 initialFormValues={initialFormValues}
                 formValues={formValues}
+                formErrors={formErrors}
+                setFormErrors={setFormErrors}
+                setFormValidity={setFormValidity}
                 type={type}
                 isFormValid={isFormValid}
               />

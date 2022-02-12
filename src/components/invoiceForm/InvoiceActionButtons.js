@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { formSchema, validate } from "../../formValidation";
 
-import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
 import Button from "../InvoiceDetails/Button";
 
@@ -42,6 +42,9 @@ function InvoiceActionButtons({
   handleFormOpen,
   initialFormValues,
   setFormValues,
+  setFormValidity,
+  formErrors,
+  setFormErrors,
   formValues,
   type,
   isFormValid,
@@ -60,7 +63,33 @@ function InvoiceActionButtons({
 
   const handleSaveAsDraft = () => {
     const invoice = { ...formValues };
-    console.log(invoice);
+    formSchema
+      .validate(formValues, { abortEarly: false })
+      .then((valid) => console.log("valid", valid))
+      .catch((result) => {
+        let newFormErrors = { ...formErrors };
+
+        result.errors.forEach((err) => {
+          if (typeof err === "string") {
+            newFormErrors.suggestions.push(
+              "* please fill out all required fields"
+            );
+            // newFormErrors.suggestions.push(err);
+          }
+
+          if (err.type)
+            newFormErrors[err.type] = {
+              ...newFormErrors[err.type],
+              [err.name]: err.message,
+            };
+
+          if (!err.type) {
+            newFormErrors[err.ref] = err.message;
+          }
+        });
+
+        setFormErrors(newFormErrors);
+      });
   };
 
   const handleSaveAndSend = () => {
@@ -84,7 +113,7 @@ function InvoiceActionButtons({
           type="draft"
           text="Save as Draft"
           responsiveText="Draft"
-          disabled={!isFormValid}
+          // disabled={!isFormValid}
         />
         <Button
           onClick={handleSaveAndSend}

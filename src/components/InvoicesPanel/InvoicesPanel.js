@@ -160,12 +160,12 @@ const StyledInvoicePanel = styled.div`
   }
 `;
 
-function InvoicesPanel({ invoices, isLoading, dispatch }) {
+function InvoicesPanel({ invoices, isLoading, errorMessage, dispatch }) {
   const user_id = localStorage.getItem("user_id");
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchInvoices(+user_id));
+    dispatch(fetchInvoices(user_id));
   }, []);
 
   const handleInvoiceClick = ({ target }) => {
@@ -174,20 +174,20 @@ function InvoicesPanel({ invoices, isLoading, dispatch }) {
 
   return (
     <StyledInvoicePanel>
-      {invoices.length === 0 ? (
+      {errorMessage ? (
         <NoInvoices />
       ) : (
         invoices.map((invoice) => {
           return (
             <div
-              key={invoice.id}
+              key={invoice.invoice_id}
               className="invoice"
-              data-id={invoice.id}
+              data-id={invoice.invoice_id}
               onClick={handleInvoiceClick}
             >
               <h4 className="invoice-id no-marg-padd">
                 <span>#</span>
-                {invoice.id}
+                {invoice.invoice_id}
               </h4>
               <div className="invoice-due-date body-1">
                 Due {invoice.paymentDue}
@@ -195,9 +195,7 @@ function InvoicesPanel({ invoices, isLoading, dispatch }) {
               <div className="invoice-recipient body-1">
                 {invoice.clientName}
               </div>
-              <h3 className="invoice-total no-marg-padd">
-                {invoice.total.toFixed(2)}
-              </h3>
+              <h3 className="invoice-total no-marg-padd">{invoice.total}</h3>
 
               <InvoiceStatus invoiceStatus={invoice.status} />
 
@@ -220,6 +218,7 @@ const mapStateToProps = (state) => {
   return {
     invoices: state.invoices,
     isLoading: state.isLoading,
+    errorMessage: state.errorMessage,
   };
 };
 
