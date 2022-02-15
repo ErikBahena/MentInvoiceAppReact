@@ -35,20 +35,21 @@ const StyledInvoiceForm = styled.div`
 
   //  all common input styling
 
-  input[class="long-input-length"],
-  input[class="small-input-length"],
+  input.long-input-length,
+  input.small-input-length,
   input {
     height: 3rem;
     border-radius: 0.25rem;
     border: 1px solid var(--clr-input-border);
   }
 
-  input[class="long-input-length"] {
+  input.long-input-length {
     width: 100%;
   }
-  input[class="small-input-length"] {
+  input.small-input-length {
     width: 9.5rem;
   }
+
   input:focus {
     outline: 1px solid var(--clr-primary-purple);
     outline-style: auto;
@@ -611,9 +612,10 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
               <ItemList formValues={formValues} setFormValues={setFormValues} />
 
               {!isFormValid && (
-                <p className="body-1 error-message error-form-message">
-                  {formErrors.suggestions.join("\n")}
-                </p>
+                <p
+                  className="body-1 error-message error-form-message"
+                  dangerouslySetInnerHTML={{ __html: formErrors.suggestions }}
+                />
               )}
 
               <InvoiceActionButtons
@@ -623,7 +625,6 @@ export default function InvoiceForm({ handleFormOpen, formOpen, type }) {
                 formValues={formValues}
                 formErrors={formErrors}
                 setFormErrors={setFormErrors}
-                setFormValidity={setFormValidity}
                 type={type}
                 isFormValid={isFormValid}
               />
