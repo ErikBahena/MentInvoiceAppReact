@@ -4,6 +4,7 @@ import { formSchema, validate } from "../../formValidation";
 
 import styled from "styled-components";
 import Button from "../InvoiceDetails/Button";
+import createFormErrors from "../../formValidation/createFormErrors";
 
 const StyledInvoiceActionButtons = styled.div`
   display: flex;
@@ -42,7 +43,6 @@ function InvoiceActionButtons({
   handleFormOpen,
   initialFormValues,
   setFormValues,
-  setFormValidity,
   formErrors,
   setFormErrors,
   formValues,
@@ -62,34 +62,10 @@ function InvoiceActionButtons({
   };
 
   const handleSaveAsDraft = () => {
-    const invoice = { ...formValues };
     formSchema
       .validate(formValues, { abortEarly: false })
-      .then((valid) => console.log("valid", valid))
-      .catch((result) => {
-        let newFormErrors = { ...formErrors };
-
-        result.errors.forEach((err) => {
-          if (typeof err === "string") {
-            newFormErrors.suggestions.push(
-              "* please fill out all required fields"
-            );
-            // newFormErrors.suggestions.push(err);
-          }
-
-          if (err.type)
-            newFormErrors[err.type] = {
-              ...newFormErrors[err.type],
-              [err.name]: err.message,
-            };
-
-          if (!err.type) {
-            newFormErrors[err.ref] = err.message;
-          }
-        });
-
-        setFormErrors(newFormErrors);
-      });
+      .then((formValues) => console.log("valid", formValues))
+      .catch((result) => setFormErrors(createFormErrors(result, formErrors)));
   };
 
   const handleSaveAndSend = () => {
@@ -113,7 +89,6 @@ function InvoiceActionButtons({
           type="draft"
           text="Save as Draft"
           responsiveText="Draft"
-          // disabled={!isFormValid}
         />
         <Button
           onClick={handleSaveAndSend}
